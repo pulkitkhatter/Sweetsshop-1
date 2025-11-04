@@ -9,6 +9,7 @@ import { PageLoader } from '@/components/LoadingSpinner';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import Index from '@/pages/Index';
 import Products from '@/pages/Products';
