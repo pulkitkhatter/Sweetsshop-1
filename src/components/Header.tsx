@@ -70,7 +70,8 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
         </div>
       )}
 
-      <div className="container mx-auto px-4">
+      {/* Original Header - Hidden on mobile screens */}
+      <div className="container mx-auto px-4 md:block hidden">
         <div className="flex items-center justify-between h-24 md:h-32">
           {/* Logo - Increased size */}
           <motion.div
@@ -82,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
             <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
               <img 
                 src={logoImage} 
-                alt="Sweet Delights Logo" 
+                alt="Super Sweets Logo" 
                 className="w-32 h-32 md:w-28 md:h-28 object-contain hidden xs:block"
               />
               <div className="xs:hidden flex items-center">
@@ -117,7 +118,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
                     transition: { duration: 0.3 }
                   }}
                 >
-                  Sweet Delights
+                  Super Sweets
                 </motion.span>
                 <motion.div 
                   className="text-sm md:text-base text-muted-foreground -mt-1"
@@ -215,214 +216,206 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
                 <User className="w-6 h-6 md:w-7 md:h-7" />
               </button>
             )}
-
-            {/* Mobile Menu Button */}
-            <button 
-              onClick={toggleMobileMenu}
-              className="p-2 md:p-3 hover:bg-muted rounded-lg transition-colors md:hidden"
-            >
-              {isMobileMenuOpen ? <X className="w-6 h-6 md:w-7 md:h-7" /> : <Menu className="w-6 h-6 md:w-7 md:h-7" />}
-            </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Menu Overlay */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                className="fixed inset-0 bg-black/50 z-40 md:hidden"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={closeMobileMenu}
-              />
+      {/* Mobile Navbar for small screens - New implementation */}
+      <div className="md:hidden flex items-center justify-between py-3 border-b px-4">
+        {/* Left: Hamburger Menu */}
+        <button 
+          onClick={toggleMobileMenu}
+          className="p-2 hover:bg-muted rounded-lg transition-colors"
+        >
+          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+
+        {/* Center: Logo */}
+        <Link to="/" className="flex items-center justify-center">
+          <img 
+            src={logoImage} 
+            alt="Super Sweets Logo" 
+            className="w-16 h-16 object-contain"
+          />
+        </Link>
+
+        {/* Right: Search and Cart */}
+        <div className="flex items-center space-x-2">
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className="p-2 hover:bg-muted rounded-lg transition-colors"
+          >
+            <Search className="w-6 h-6" />
+          </button>
+
+          <button 
+            onClick={toggleCart}
+            className="relative p-2 hover:bg-muted rounded-lg transition-colors"
+          >
+            <ShoppingCart className="w-6 h-6" />
+            {cartItemsCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {cartItemsCount > 99 ? '99+' : cartItemsCount}
+              </span>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeMobileMenu}
+            />
               
-              {/* Mobile Menu - Sliding from bottom to top */}
-              <motion.div
-                className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-lg z-50 md:hidden"
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                exit={{ y: "100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              >
-                <div className="container mx-auto px-4 py-4 max-h-[70vh] overflow-y-auto">
-                  {/* Mobile Header with Logo and Icons - Reordered layout */}
-                  <div className="flex items-center justify-between mb-4 pb-4 border-b">
-                    {/* Menu Button (Hamburger) */}
-                    <button 
-                      onClick={toggleMobileMenu}
-                      className="p-2 hover:bg-muted rounded-lg transition-colors"
-                    >
-                      <X className="w-6 h-6" />
-                    </button>
+            {/* Mobile Menu - Sliding from bottom to top */}
+            <motion.div
+              className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-lg z-50 md:hidden"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            >
+              <div className="container mx-auto px-4 py-4 max-h-[70vh] overflow-y-auto">
+                {/* Mobile Header with Logo and Icons - Reordered layout */}
+                <div className="flex items-center justify-between mb-4 pb-4 border-b">
+                  {/* Menu Button (Hamburger) */}
+                  <button 
+                    onClick={toggleMobileMenu}
+                    className="p-2 hover:bg-muted rounded-lg transition-colors"
+                  >
+                    <X className="w-6 h-6" />
+                  </button>
 
-                    {/* Logo - Updated to show logo on mobile menu header */}
-                    <Link to="/" className="flex items-center space-x-2 flex-shrink-0" onClick={closeMobileMenu}>
-                      <img 
-                        src={logoImage} 
-                        alt="Sweet Delights Logo" 
-                        className="w-16 h-16 object-contain"
-                      />
-                      <div className="hidden xs:block">
-                        <motion.span 
-                          className="text-xl font-bold text-primary lobster-font logo-glow"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.4 }}
-                          whileHover={{ 
-                            scale: 1.05,
-                            textShadow: "0 0 8px rgba(74, 74, 153, 0.8)",
-                            transition: { duration: 0.3 }
-                          }}
-                        >
-                          Sweet Delights
-                        </motion.span>
+                  {/* App Name */}
+                  <span className="text-xl font-bold text-primary lobster-font logo-glow">
+                    SuperSweets
+                  </span>
+
+                  {/* Spacer */}
+                  <div></div>
+                </div>
+
+                {/* Navigation Links */}
+                <nav className="space-y-2 mb-4">
+                  <motion.button
+                    onClick={() => handleNavigation('/')}
+                    className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
+                    whileHover={{ x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Home className="w-5 h-5 text-primary" />
+                    <span className="font-medium">Home</span>
+                  </motion.button>
+                    
+                  <motion.button
+                    onClick={() => handleNavigation('/products')}
+                    className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
+                    whileHover={{ x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Package className="w-5 h-5 text-primary" />
+                    <span className="font-medium">Sweets</span>
+                  </motion.button>
+                    
+                  <motion.button
+                    onClick={() => handleNavigation('/about')}
+                    className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
+                    whileHover={{ x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Info className="w-5 h-5 text-primary" />
+                    <span className="font-medium">About</span>
+                  </motion.button>
+                    
+                  <motion.button
+                    onClick={() => handleNavigation('/contact')}
+                    className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
+                    whileHover={{ x: 5 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Phone className="w-5 h-5 text-primary" />
+                    <span className="font-medium">Contact</span>
+                  </motion.button>
+                </nav>
+
+                {/* User Section - Mobile */}
+                {user ? (
+                  <motion.div 
+                    className="border-t pt-4 space-y-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
+                      <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                        <span className="text-primary-foreground font-medium">
+                          {user.email?.charAt(0).toUpperCase()}
+                        </span>
                       </div>
-                    </Link>
-
-                    <div className="flex items-center space-x-2">
-                      {/* Search */}
-                      <button 
-                        onClick={() => {
-                          setIsSearchOpen(true);
-                          closeMobileMenu();
-                        }}
-                        className="p-2 hover:bg-muted rounded-lg transition-colors"
-                      >
-                        <Search className="w-5 h-5" />
-                      </button>
-
-                      {/* Cart */}
-                      <button 
-                        onClick={toggleCart}
-                        className="relative p-2 hover:bg-muted rounded-lg transition-colors"
-                      >
-                        <ShoppingCart className="w-5 h-5" />
-                        {cartItemsCount > 0 && (
-                          <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                            {cartItemsCount > 99 ? '99+' : cartItemsCount}
-                          </span>
-                        )}
-                      </button>
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium truncate">{profile?.full_name || 'User'}</p>
+                        <p className="text-sm text-muted-foreground truncate">{user.email}</p>
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Navigation Links */}
-                  <nav className="space-y-2 mb-4">
-                    <motion.button
-                      onClick={() => handleNavigation('/')}
-                      className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                      whileHover={{ x: 5 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Home className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Home</span>
-                    </motion.button>
-                    
-                    <motion.button
-                      onClick={() => handleNavigation('/products')}
-                      className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                      whileHover={{ x: 5 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Package className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Sweets</span>
-                    </motion.button>
-                    
-                    <motion.button
-                      onClick={() => handleNavigation('/about')}
-                      className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                      whileHover={{ x: 5 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Info className="w-5 h-5 text-primary" />
-                      <span className="font-medium">About</span>
-                    </motion.button>
-                    
-                    <motion.button
-                      onClick={() => handleNavigation('/contact')}
-                      className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                      whileHover={{ x: 5 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Phone className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Contact</span>
-                    </motion.button>
-                  </nav>
-
-                  {/* User Section - Mobile */}
-                  {user ? (
-                    <motion.div 
-                      className="border-t pt-4 space-y-2"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
-                        <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                          <span className="text-primary-foreground font-medium">
-                            {user.email?.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium truncate">{profile?.full_name || 'User'}</p>
-                          <p className="text-sm text-muted-foreground truncate">{user.email}</p>
-                        </div>
-                      </div>
                       
+                    <button
+                      onClick={() => handleNavigation('/profile')}
+                      className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
+                    >
+                      <User className="w-5 h-5 text-primary" />
+                      <span className="font-medium">My Profile</span>
+                    </button>
+                      
+                    {isAdmin && (
                       <button
-                        onClick={() => handleNavigation('/profile')}
+                        onClick={() => handleNavigation('/admin')}
                         className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
                       >
                         <User className="w-5 h-5 text-primary" />
-                        <span className="font-medium">My Profile</span>
+                        <span className="font-medium">Admin Panel</span>
                       </button>
+                    )}
                       
-                      {isAdmin && (
-                        <button
-                          onClick={() => handleNavigation('/admin')}
-                          className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                        >
-                          <User className="w-5 h-5 text-primary" />
-                          <span className="font-medium">Admin Panel</span>
-                        </button>
-                      )}
-                      
-                      <button
-                        onClick={signOut}
-                        className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left text-destructive"
-                      >
-                        <LogOut className="w-5 h-5" />
-                        <span className="font-medium">Sign Out</span>
-                      </button>
-                    </motion.div>
-                  ) : (
-                    <motion.div 
-                      className="border-t pt-4"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 }}
+                    <button
+                      onClick={signOut}
+                      className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left text-destructive"
                     >
-                      <button
-                        onClick={() => handleNavigation('/auth')}
-                        className="flex items-center justify-center space-x-2 w-full p-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-                      >
-                        <User className="w-5 h-5" />
-                        <span className="font-medium">Sign In / Register</span>
-                      </button>
-                    </motion.div>
-                  )}
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+                      <LogOut className="w-5 h-5" />
+                      <span className="font-medium">Sign Out</span>
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.div 
+                    className="border-t pt-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <button
+                      onClick={() => handleNavigation('/auth')}
+                      className="flex items-center justify-center space-x-2 w-full p-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+                    >
+                      <User className="w-5 h-5" />
+                      <span className="font-medium">Sign In / Register</span>
+                    </button>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
-        {/* Search Sidebar */}
-        <SearchSidebar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-      </div>
+      {/* Search Sidebar */}
+      <SearchSidebar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </motion.header>
   );
 };
