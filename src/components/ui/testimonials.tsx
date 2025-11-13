@@ -24,77 +24,93 @@ const Testimonials = () => {
 
   if (loading) {
     return (
-      <section className="my-20 relative bg-gradient-to-br from-white to-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col items-center justify-center max-w-[540px] mx-auto">
-            <div className="flex justify-center">
-              <div className="border py-1 px-4 rounded-full text-sm font-medium bg-white shadow-sm">Testimonials</div>
+      <section className="py-20 bg-gradient-to-b from-[#fff5e6] to-[#ffe7c2] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
+
+          {/* HEADER */}
+          <div className="text-center max-w-xl mx-auto">
+            <div className="inline-block bg-white shadow-md border border-[#CB9730]/20 px-4 py-1 rounded-full text-sm font-semibold text-[#CB9730]">
+              Testimonials
             </div>
 
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mt-5 text-center text-gray-900">
-              What our customers say
+            <h2 className="text-3xl md:text-4xl font-extrabold text-[#3A2E21] mt-5">
+              What Our Customers Say
             </h2>
-            <p className="text-center mt-5 text-gray-600 max-w-md">
-              Hear from sweet lovers who have delighted their taste buds with our premium sweets.
+
+            <p className="text-gray-700 mt-3">
+              Sweet stories shared by people who love our traditional mithai.
             </p>
           </div>
 
-          <div className="flex justify-center gap-4 md:gap-6 mt-16 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[740px] overflow-hidden">
-            <div className="flex flex-col gap-6 pb-6">
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="p-6 rounded-3xl border shadow-lg shadow-primary/10 max-w-xs w-full bg-white animate-pulse">
-                  <div className="h-20 bg-gray-200 rounded mb-4"></div>
-                  <div className="flex items-center gap-2 mt-5">
-                    <div className="w-10 h-10 rounded-full bg-gray-200"></div>
-                    <div className="flex flex-col">
-                      <div className="h-4 bg-gray-200 rounded w-20 mb-2"></div>
-                      <div className="h-3 bg-gray-200 rounded w-16"></div>
-                    </div>
+          {/* LOADING SKELETONS */}
+          <div className="flex justify-center gap-5 mt-16">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="w-72 h-64 bg-white rounded-3xl shadow-xl border border-[#CB9730]/20 p-6 animate-pulse"
+              >
+                <div className="h-20 bg-[#CB9730]/10 rounded mb-4"></div>
+                <div className="flex gap-3 items-center mt-5">
+                  <div className="w-10 h-10 rounded-full bg-[#CB9730]/20" />
+                  <div className="flex flex-col w-full">
+                    <div className="h-4 w-24 bg-[#CB9730]/15 rounded mb-2"></div>
+                    <div className="h-3 w-16 bg-[#CB9730]/10 rounded"></div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
     );
   }
 
-  if (testimonials.length === 0) {
-    return null;
-  }
+  if (testimonials.length === 0) return null;
 
   const firstColumn = testimonials.slice(0, 3);
   const secondColumn = testimonials.slice(3, 6);
   const thirdColumn = testimonials.slice(6, 9);
 
   return (
-    <section className="my-20 relative bg-gradient-to-br from-white to-gray-50 py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-gradient-to-b from-[#fff5e6] via-[#ffefdb] to-[#ffe7c2] relative overflow-hidden">
+
+      {/* Decorative accents */}
+      <div className="absolute top-10 left-10 w-40 h-40 bg-[#CB9730]/10 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-10 right-10 w-48 h-48 bg-[#CB9730]/10 rounded-full blur-3xl"></div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+
+        {/* SECTION HEADER */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true }}
-          className="flex flex-col items-center justify-center max-w-[540px] mx-auto"
+          className="text-center max-w-xl mx-auto"
         >
-          <div className="flex justify-center">
-            <div className="border py-1 px-4 rounded-full text-sm font-medium bg-white shadow-sm">Testimonials</div>
+          <div className="inline-block bg-white/80 backdrop-blur-md border border-[#CB9730] px-5 py-1.5 rounded-full text-sm font-semibold text-[#CB9730] shadow">
+            Customer Reviews
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight mt-5 text-center text-gray-900">
-            What our customers say
+          <h2 className="text-3xl md:text-5xl font-extrabold text-[#3A2E21] mt-5 leading-tight">
+            Loved by Sweet Lovers Everywhere
           </h2>
-          <p className="text-center mt-5 text-gray-600 max-w-md">
-            Hear from sweet lovers who have delighted their taste buds with our premium sweets.
+
+          <p className="text-gray-700 mt-4 text-lg">
+            Genuine feedback from people who enjoy the magic of SuperSweets.
           </p>
         </motion.div>
 
-        <div className="flex justify-center gap-4 md:gap-6 mt-16 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[740px] overflow-hidden">
+        {/* TESTIMONIAL COLUMNS */}
+        <div className="flex justify-center gap-6 mt-16
+          [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)]
+          max-h-[760px] overflow-hidden"
+        >
           <TestimonialsColumn testimonials={firstColumn} duration={15} />
-          <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={19} />
+          <TestimonialsColumn testimonials={secondColumn} className="hidden md:block" duration={20} />
           <TestimonialsColumn testimonials={thirdColumn} className="hidden lg:block" duration={17} />
         </div>
+
       </div>
     </section>
   );

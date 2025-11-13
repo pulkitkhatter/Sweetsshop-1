@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Plus, Star, Eye, Heart, ShoppingCart } from 'lucide-react';
-import { useStore } from '../store/useStore';
-import { formatPrice } from '../utils/currency';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Plus, Star, Eye, Heart } from "lucide-react";
+import { useStore } from "../store/useStore";
+import { formatPrice } from "../utils/currency";
 
 interface Product {
   id: string;
@@ -26,27 +26,27 @@ interface ProductCardProps {
   onQuickView?: (product?: Product) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetail, onQuickView }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onViewDetail,
+  onQuickView,
+}) => {
   const addToCart = useStore((state) => state.addToCart);
   const [isHovered, setIsHovered] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
-  // Always use the first image as the primary image
-  const primaryImage = product.images?.[0] || product.image || '/placeholder.svg';
-  
-  // Get the second image for hover effect, or fallback to the first
-  const hoverImage = product.images && product.images.length > 1 
-    ? product.images[1] 
-    : primaryImage;
-  
-  // Determine which image to show based on hover state
+  const primaryImage = product.images?.[0] || product.image || "/placeholder.svg";
+  const hoverImage =
+    product.images && product.images.length > 1
+      ? product.images[1]
+      : primaryImage;
   const displayImage = isHovered ? hoverImage : primaryImage;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.stopPropagation();
     addToCart({
       ...product,
-      image: primaryImage
+      image: primaryImage,
     });
   };
 
@@ -55,164 +55,143 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onViewDetail, onQuic
     onQuickView?.(product);
   };
 
-  const handleLike = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsLiked(!isLiked);
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
-
-  const discount = product.originalPrice 
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+  const discount = product.originalPrice
+    ? Math.round(
+        ((product.originalPrice - product.price) / product.originalPrice) * 100
+      )
     : 0;
 
-  const isOutOfStock = product.stock_quantity !== undefined && product.stock_quantity <= 0;
+  const isOutOfStock =
+    product.stock_quantity !== undefined && product.stock_quantity <= 0;
 
-  // Format price with "Inc. GST" text
-  const formatPriceWithGST = (price: number): string => {
+  const formatPriceWithGST = (price: number) => {
     return `${formatPrice(price)} Inc. GST`;
   };
 
   return (
-    // Updated to remove borders and border effects
     <motion.div
-      className="group cursor-pointer bg-white rounded-lg overflow-hidden transition-all duration-300"
+      className="group cursor-pointer bg-white rounded-2xl overflow-hidden shadow-[0_4px_14px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_22px_rgba(0,0,0,0.12)] transition-all duration-300"
       whileHover={{ y: -8 }}
-      whileTap={{ scale: 0.98 }}
       onClick={onViewDetail}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       layout
     >
-      {/* Image Container */}
-      <div className="relative overflow-hidden bg-gray-50">
+      {/* IMAGE AREA */}
+      <div className="relative bg-[#faf6ef] overflow-hidden">
         <motion.img
           src={displayImage}
           alt={product.name}
           className="w-full h-64 object-cover transition-all duration-700"
-          animate={{ scale: isHovered ? 1.05 : 1 }}
+          animate={{ scale: isHovered ? 1.06 : 1 }}
         />
-        
-        {/* Minimal Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
-        {/* Floating Action Button */}
-        <motion.button
-          onClick={handleAddToCart}
-          disabled={isOutOfStock}
-          className="absolute bottom-3 right-3 bg-primary hover:bg-primary/90 text-white p-2 rounded-full shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          initial={{ y: 10 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Plus className="w-4 h-4" />
-        </motion.button>
-        
-        {/* Top Elements */}
-        <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-          {/* Discount Badge */}
+
+        {/* GOLD FLOAT LABELS */}
+        <div className="absolute top-3 left-3 flex gap-2">
           {discount > 0 && (
-            <motion.div 
-              className="bg-destructive text-white px-2 py-1 rounded-full text-xs font-bold shadow-sm"
-              initial={{ scale: 0, rotate: -5 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.1, type: "spring" }}
+            <motion.div
+              className="bg-[#D4A017] text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm"
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.1 }}
             >
               -{discount}%
             </motion.div>
           )}
-          
-          {/* Wishlist Button */}
-          <motion.button
-            onClick={handleLike}
-            className={`p-2 rounded-full backdrop-blur-sm transition-all duration-300 ${
-              isLiked 
-                ? 'bg-red-500 text-white shadow-md' 
-                : 'bg-white/80 text-gray-600 hover:bg-white shadow-sm'
-            }`}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Heart className={`w-3 h-3 ${isLiked ? 'fill-current' : ''}`} />
-          </motion.button>
         </div>
 
-        {/* Stock Status Overlay */}
+        {/* LIKE BUTTON */}
+        <motion.button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsLiked(!isLiked);
+          }}
+          className={`absolute top-3 right-3 p-2 rounded-full shadow-sm transition ${
+            isLiked
+              ? "bg-red-500 text-white"
+              : "bg-white text-gray-600 hover:bg-gray-100"
+          }`}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
+        </motion.button>
+
+        {/* QUICK VIEW */}
+        {onQuickView && (
+          <motion.button
+            onClick={handleQuickView}
+            className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-white text-gray-800 px-4 py-1 rounded-full shadow-md text-sm transition-all"
+            whileHover={{ scale: 1.05 }}
+          >
+            <Eye className="w-4 h-4 inline mr-1" />
+            Quick View
+          </motion.button>
+        )}
+
+        {/* OUT OF STOCK */}
         {isOutOfStock && (
-          <div className="absolute inset-0 bg-white/90 backdrop-blur-sm flex items-center justify-center">
-            <div className="bg-gray-800 text-white px-3 py-1 rounded-full text-xs font-medium">
+          <div className="absolute inset-0 bg-white/90 flex items-center justify-center">
+            <div className="bg-gray-900 text-white px-3 py-1 rounded-full text-sm font-medium">
               Out of Stock
             </div>
           </div>
         )}
 
-        {/* Quick View Button */}
-        {onQuickView && (
-          <motion.button
-            onClick={handleQuickView}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-sm hover:bg-white text-gray-800 px-3 py-1 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 text-sm"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Eye className="w-3 h-3 mr-1 inline" />
-            Quick View
-          </motion.button>
-        )}
+        {/* ADD TO CART FAB */}
+        <motion.button
+          onClick={handleAddToCart}
+          disabled={isOutOfStock}
+          className="absolute bottom-3 right-3 bg-[#D4A017] hover:bg-[#bb8d14] text-white p-3 rounded-full shadow-md transition disabled:opacity-40"
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <Plus className="w-4 h-4" />
+        </motion.button>
       </div>
 
-      {/* Product Info - Centered below image */}
+      {/* PRODUCT INFO */}
       <div className="p-4 text-center space-y-3">
-        {/* Product Name */}
-        <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2 text-base leading-tight">
+        <h3 className="font-semibold text-gray-900 group-hover:text-[#D4A017] transition-colors text-base leading-tight line-clamp-2">
           {product.name}
         </h3>
 
-        {/* Rating & Reviews */}
+        {/* Rating */}
         {product.rating && (
-          <div className="flex items-center justify-center space-x-1">
-            <div className="flex items-center space-x-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star 
-                  key={i} 
-                  className={`w-3 h-3 ${
-                    i < Math.floor(product.rating) 
-                      ? 'fill-yellow-400 text-yellow-400' 
-                      : 'text-gray-200'
-                  }`} 
-                />
-              ))}
-            </div>
-            <span className="text-xs text-gray-500 font-medium">({product.rating})</span>
+          <div className="flex justify-center space-x-1">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`w-3 h-3 ${
+                  i < Math.floor(product.rating)
+                    ? "text-yellow-400 fill-yellow-400"
+                    : "text-gray-300"
+                }`}
+              />
+            ))}
+            <span className="text-xs text-gray-500">({product.rating})</span>
           </div>
         )}
 
-        {/* Price Section with "Inc. GST" */}
-        <div className="flex items-center justify-center">
-          <div className="space-y-1">
-            <div className="flex items-baseline justify-center space-x-1">
-              <span className="text-lg font-bold text-gray-900">
-                {formatPriceWithGST(product.price)}
+        {/* PRICES */}
+        <div>
+          <div className="flex justify-center items-baseline space-x-2">
+            <span className="text-lg font-bold text-gray-900">
+              {formatPriceWithGST(product.price)}
+            </span>
+
+            {product.originalPrice && (
+              <span className="line-through text-gray-400 text-sm">
+                {formatPriceWithGST(product.originalPrice)}
               </span>
-              {product.originalPrice && (
-                <span className="text-sm text-gray-400 line-through">
-                  {formatPriceWithGST(product.originalPrice)}
-                </span>
-              )}
-            </div>
-            {discount > 0 && (
-              <div className="text-xs text-destructive font-semibold">
-                Save {formatPrice(product.originalPrice - product.price)}
-              </div>
             )}
           </div>
+
+          {discount > 0 && (
+            <div className="text-xs text-red-600 font-medium">
+              Save {formatPrice(product.originalPrice - product.price)}
+            </div>
+          )}
         </div>
       </div>
     </motion.div>

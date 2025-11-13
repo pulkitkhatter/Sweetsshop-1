@@ -1,16 +1,19 @@
+/* --------------------------------------------- */
+/*  FONTS */
+/* --------------------------------------------- */
 @import url('https://fonts.googleapis.com/css2?family=Tenor+Sans&display=swap');
-
-/* Add M-body-font-400 font */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
-
-/* Lobster Two font for SuperSweets logo */
 @import url('https://fonts.googleapis.com/css2?family=Lobster+Two:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
+/* Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom utilities */
+/* --------------------------------------------- */
+/*  GLOBAL UTILITIES */
+/* --------------------------------------------- */
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -25,33 +28,34 @@
   overflow: hidden;
 }
 
-/* Marquee Animation */
+/* Marquee (slow, readable, premium) */
 .animate-marquee {
   display: inline-block;
-  animation: marquee 25s linear infinite; /* Slower speed - changed from 15s to 25s */
+  animation: marquee 60s linear infinite;
 }
 
 @keyframes marquee {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+  0% { transform: translateX(100%) }
+  100% { transform: translateX(-100%) }
 }
 
-/* Responsive header adjustments */
+/* --------------------------------------------- */
+/* RESPONSIVE HEADER FIXES */
+/* --------------------------------------------- */
 @media (max-width: 640px) {
   .mobile-header-spacing {
-    height: 6rem; /* Adjust for larger header on mobile */
+    height: 6rem;
   }
 }
 
+/* --------------------------------------------- */
+/*  THEME VARIABLES (LIGHT + DARK) */
+/* --------------------------------------------- */
 @layer base {
   :root {
-    /* Premium Sweet Shop Palette - Navy, Ivory, Gold, Light Grey */
-    --background: 48 33% 97%;       /* Ivory */
-    --foreground: 218 28% 15%;      /* Deep Navy Text */
+    /* Premium Ivory + Gold Theme */
+    --background: 48 33% 97%;          /* Ivory */
+    --foreground: 218 28% 15%;         /* Deep text */
 
     --card: 0 0% 100%;
     --card-foreground: 218 28% 15%;
@@ -59,61 +63,56 @@
     --popover: 0 0% 100%;
     --popover-foreground: 218 28% 15%;
 
-    /* Primary - Navy Blue */
-    --primary: 218 28% 15%;         /* Navy */
-    --primary-foreground: 0 0% 100%; /* White text on navy */
-    --primary-hover: 218 28% 20%;   /* Slightly lighter navy */
+    /* Primary — Navy */
+    --primary: 218 28% 15%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 218 28% 20%;
 
-    /* Secondary - Gold */
-    --secondary: 46 85% 55%;        /* Gold */
+    /* Secondary — Gold */
+    --secondary: 46 85% 55%;
     --secondary-foreground: 218 28% 15%;
 
-    /* Accent - Light Grey */
+    /* Accent */
     --accent: 0 0% 90%;
     --accent-foreground: 218 28% 15%;
 
-    /* Support Colors */
+    /* Muted */
     --muted: 0 0% 95%;
     --muted-foreground: 0 0% 40%;
 
+    /* Success */
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
+
+    /* Error */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    /* UI Elements */
+    /* Inputs + Borders */
     --border: 0 0% 88%;
     --input: 0 0% 100%;
-    --ring: 46 85% 55%; /* Gold ring highlight */
+    --ring: 46 85% 55%;
 
-    /* Admin Theme Colors */
-    --admin-primary: 218 28% 15%;   /* Navy */
-    --admin-secondary: 46 85% 55%;  /* Gold */
-    --admin-accent: 0 0% 90%;       /* Light Grey */
-    --admin-background: 48 33% 97%; /* Ivory */
+    /* Admin Theme */
+    --admin-primary: 218 28% 15%;
+    --admin-secondary: 46 85% 55%;
+    --admin-accent: 0 0% 90%;
+    --admin-background: 48 33% 97%;
     --admin-card: 0 0% 100%;
 
     /* Shadows */
-    --shadow-soft: 0 1px 3px 0 hsl(0 0% 0% / 0.1),
-      0 1px 2px -1px hsl(0 0% 0% / 0.1);
-    --shadow-medium: 0 4px 6px -1px hsl(0 0% 0% / 0.1),
-      0 2px 4px -2px hsl(0 0% 0% / 0.1);
-    --shadow-large: 0 10px 15px -3px hsl(0 0% 0% / 0.1),
-      0 4px 6px -4px hsl(0 0% 0% / 0.1);
+    --shadow-soft: 0 1px 3px rgba(0,0,0,0.1),
+                   0 1px 2px rgba(0,0,0,0.06);
+    --shadow-medium: 0 4px 6px rgba(0,0,0,0.1),
+                     0 2px 4px rgba(0,0,0,0.06);
+    --shadow-large: 0 10px 15px rgba(0,0,0,0.1),
+                    0 4px 6px rgba(0,0,0,0.06);
 
+    /* Radius */
     --radius: 0.75rem;
-
-    /* Sidebar */
-    --sidebar-background: 48 33% 97%;
-    --sidebar-foreground: 218 28% 15%;
-    --sidebar-primary: 218 28% 15%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 90%;
-    --sidebar-accent-foreground: 218 28% 15%;
-    --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 46 85% 55%;
   }
 
+  /* Dark Mode */
   .dark {
     --background: 218 28% 12%;
     --foreground: 210 40% 98%;
@@ -124,10 +123,10 @@
     --popover: 218 28% 12%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 46 85% 55%;        /* Gold */
+    --primary: 46 85% 55%;
     --primary-foreground: 218 28% 12%;
 
-    --secondary: 218 28% 20%;     /* Dark Navy */
+    --secondary: 218 28% 20%;
     --secondary-foreground: 210 40% 98%;
 
     --muted: 218 28% 20%;
@@ -136,24 +135,18 @@
     --accent: 218 28% 20%;
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 62% 30%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 218 28% 20%;
     --input: 218 28% 20%;
-    --ring: 46 85% 55%;  /* Gold highlight */
-
-    --sidebar-background: 218 28% 15%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 46 85% 55%;
-    --sidebar-primary-foreground: 218 28% 15%;
-    --sidebar-accent: 218 28% 20%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 218 28% 20%;
-    --sidebar-ring: 46 85% 55%;
+    --ring: 46 85% 55%;
   }
 }
 
+/* --------------------------------------------- */
+/* BASE TYPOGRAPHY + BODY */
+/* --------------------------------------------- */
 @layer base {
   * {
     @apply border-border;
@@ -163,28 +156,26 @@
     @apply bg-background text-foreground;
     font-family: 'Tenor Sans', sans-serif;
   }
-  
+
   .M-body-font-400 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
   }
-  
+
   .lobster-font {
     font-family: 'Lobster Two', cursive;
     font-weight: 700;
   }
-  
+
+  /* Logo Glow */
   .logo-glow {
-    text-shadow: 0 0 10px rgba(74, 74, 153, 0.5), 0 0 20px rgba(74, 74, 153, 0.3);
-    animation: glow 2s ease-in-out infinite alternate;
+    text-shadow: 0 0 10px rgba(212,160,23,0.4),
+                 0 0 20px rgba(212,160,23,0.2);
+    animation: glow 3s ease-in-out infinite alternate;
   }
-  
+
   @keyframes glow {
-    from {
-      text-shadow: 0 0 5px rgba(74, 74, 153, 0.5), 0 0 10px rgba(74, 74, 153, 0.3);
-    }
-    to {
-      text-shadow: 0 0 15px rgba(74, 74, 153, 0.7), 0 0 25px rgba(74, 74, 153, 0.5);
-    }
+    from { text-shadow: 0 0 6px rgba(212,160,23,0.4); }
+    to   { text-shadow: 0 0 14px rgba(212,160,23,0.6); }
   }
 }

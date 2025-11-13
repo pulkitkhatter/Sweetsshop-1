@@ -1,20 +1,36 @@
+// PREMIUM LUXURY HEADER – CREAM + YELLOW GOLD THEME
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Menu, Search, LogOut, X, Home, Package, Info, Phone } from 'lucide-react';
-import logoImage from '../assets/logo.png';
+import {
+  ShoppingCart,
+  User,
+  Menu,
+  Search,
+  LogOut,
+  X,
+  Home,
+  Package,
+  Info,
+  Phone,
+} from 'lucide-react';
+
+import logoImage from '../assets/logo2.png';
+
 import { useStore } from '../store/useStore';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSettings } from '@/hooks/useSettings';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
+
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger 
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
+
 import SearchSidebar from './SearchSidebar';
 
 interface HeaderProps {
@@ -22,10 +38,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
-  // Don't render header content for admin routes
-  if (isAdminRoute) {
-    return null;
-  }
+  if (isAdminRoute) return null;
 
   const { settings } = useSettings();
   const { cartItems, toggleCart } = useStore();
@@ -34,16 +47,14 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  
-  const cartItemsCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
+  const cartItemsCount = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
+  const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   const handleNavigation = (path: string) => {
     navigate(path);
@@ -51,210 +62,195 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
   };
 
   return (
-    <motion.header 
-      className="bg-background shadow-soft sticky top-0 z-50"
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.3 }}
+    <motion.header
+      className="sticky top-0 z-50 shadow-sm"
+      style={{ backgroundColor: '#FAF3E0' }} // Full Cream Background
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.45, ease: 'easeOut' }}
     >
-      {/* Marquee Text for Bulk Orders */}
+      {/* GOLDEN MARQUEE */}
       {settings?.store_phone && (
-        <div className="bg-primary text-primary-foreground py-2 overflow-hidden">
-          <div className="animate-marquee whitespace-nowrap text-lg font-semibold inline-block">
-            <span className="mx-4">For Bulk Order Call - {settings.store_phone}</span>
-            <span className="mx-4">For Bulk Order Call - {settings.store_phone}</span>
-            <span className="mx-4">For Bulk Order Call - {settings.store_phone}</span>
-            <span className="mx-4">For Bulk Order Call - {settings.store_phone}</span>
-            <span className="mx-4">For Bulk Order Call - {settings.store_phone}</span>
+        <div className="bg-gradient-to-r from-yellow-600 to-yellow-500 text-white py-1.5 overflow-hidden">
+          <div className="animate-marquee whitespace-nowrap text-sm font-semibold opacity-90">
+            {Array(6)
+              .fill(null)
+              .map((_, i) => (
+                <span key={i} className="mx-6 tracking-wide">
+              ✦ PAN India Delivery • International Shipping Available • Order Now: {settings.store_phone} ✦
+
+                </span>
+              ))}
           </div>
         </div>
       )}
 
-      {/* Original Header - Hidden on mobile screens */}
-      <div className="container mx-auto px-4 md:block hidden">
-        <div className="flex items-center justify-between h-24 md:h-32">
-          {/* Logo - Increased size */}
-          <motion.div
-            className="flex items-center space-x-2 flex-shrink-0"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-          >
-            <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
-              <img 
-                src={logoImage} 
-                alt="Super Sweets Logo" 
-                className="w-32 h-32 md:w-28 md:h-28 object-contain hidden xs:block"
-              />
-              <div className="xs:hidden flex items-center">
-                <motion.span 
-                  className="text-2xl text-primary lobster-font logo-glow"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  whileHover={{ 
-                    scale: 1.05,
-                    textShadow: "0 0 8px rgba(153, 146, 74, 0.8)",
-                    transition: { duration: 0.3 }
-                  }}
-                >
-                  SuperSweets
-                </motion.span>
-              </div>
-              <div className="hidden xs:block">
-                <motion.span 
-                  className="text-3xl md:text-4xl font-bold text-primary lobster-font logo-glow"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ 
-                    duration: 0.6,
-                    delay: 0.1,
-                    type: "spring",
-                    stiffness: 200
-                  }}
-                  whileHover={{ 
-                    scale: 1.05,
-                    textShadow: "0 0 15px rgba(74, 74, 153, 0.9)",
-                    transition: { duration: 0.3 }
-                  }}
-                >
-                  Super Sweets
-                </motion.span>
-                <motion.div 
-                  className="text-sm md:text-base text-muted-foreground -mt-1"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                >
-                  Premium Sweets & Desserts
-                </motion.div>
-              </div>
+      {/* DESKTOP HEADER */}
+  <div
+  className="container mx-auto md:flex hidden items-center justify-between h-24"
+  style={{ paddingTop: '0px', paddingBottom: '0px' }} // removes vertical squeeze
+>
+
+{/* Logo */}
+<Link to="/" className="flex items-center space-x-4">
+
+<motion.img
+  src={logoImage}
+  alt="Super Sweets"
+  className="h-[96px] w-auto object-contain -mt-[8px] -mb-[8px] drop-shadow-xl"
+  whileHover={{ scale: 1.05 }}
+  transition={{ duration: 0.3 }}
+/>
+
+  <div className="flex flex-col justify-center -mt-1"> 
+    <h1
+      className="text-[46px] leading-[1] font-bold"
+      style={{ color: '#D4A017' }}
+    >
+      Super Sweets
+    </h1>
+    <p
+      className="text-[14px] leading-[1.1]"
+      style={{ color: '#6E5E51' }}
+    >
+      Premium Sweets & Desserts
+    </p>
+  </div>
+
+</Link>
+
+        {/* Desktop Navigation */}
+        <nav className="flex items-center space-x-10 text-lg font-medium">
+          {[
+            { label: 'Home', to: '/' },
+            { label: 'Sweets', to: '/products' },
+            { label: 'About', to: '/about' },
+            { label: 'Contact', to: '/contact' },
+          ].map((item, i) => (
+            <Link
+              key={i}
+              to={item.to}
+              className="transition-colors"
+              style={{
+                color: '#3A2E21',
+              }}
+            >
+              {item.label}
             </Link>
-          </motion.div>
+          ))}
+        </nav>
 
-          {/* Spacer for layout */}
-          <div className="hidden sm:flex flex-1 justify-center">
-            {/* Desktop Navigation */}
-            <nav className="flex items-center space-x-8">
-              <Link to="/" className="body-text text-lg hover:text-primary transition-colors">
-                Home
-              </Link>
-              <Link to="/products" className="body-text text-lg hover:text-primary transition-colors">
-                Sweets
-              </Link>
-              <Link to="/about" className="body-text text-lg hover:text-primary transition-colors">
-                About
-              </Link>
-              <Link to="/contact" className="body-text text-lg hover:text-primary transition-colors">
-                Contact
-              </Link>
-            </nav>
-          </div>
+        {/* Desktop Right Section */}
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={() => setIsSearchOpen(true)}
+            className="p-2 rounded-lg hover:bg-yellow-100 transition"
+          >
+            <Search className="w-6 h-6" style={{ color: '#3A2E21' }} />
+          </button>
 
-          {/* Right Section - Adjusted for mobile */}
-          <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
-            {/* Search */}
-            <button 
-              onClick={() => setIsSearchOpen(true)}
-              className="p-2 md:p-3 hover:bg-muted rounded-lg transition-colors"
-            >
-              <Search className="w-6 h-6 md:w-7 md:h-7" />
-            </button>
-
-            {/* Cart */}
-            <button 
-              onClick={toggleCart}
-              className="relative p-2 md:p-3 hover:bg-muted rounded-lg transition-colors"
-            >
-              <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
-              {cartItemsCount > 0 && (
-                <motion.span 
-                  className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-6 h-6 flex items-center justify-center"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                >
-                  {cartItemsCount > 99 ? '99+' : cartItemsCount}
-                </motion.span>
-              )}
-            </button>
-
-            {/* User - Desktop */}
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger className="hidden md:flex items-center space-x-2 p-2 md:p-3 hover:bg-muted rounded-lg transition-colors">
-                  <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-primary-foreground text-base md:text-lg font-medium">
-                      {user.email?.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                  <span className="hidden lg:block body-text max-w-32 truncate text-lg">{user.email}</span>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => navigate('/profile')}>
-                    <User className="mr-2 h-4 w-4" />
-                    Profile
-                  </DropdownMenuItem>
-                  {isAdmin && (
-                    <DropdownMenuItem onClick={() => navigate('/admin')}>
-                      <User className="mr-2 h-4 w-4" />
-                      Admin Panel
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOut}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <button 
-                onClick={() => navigate('/auth')}
-                className="hidden md:flex p-2 md:p-3 hover:bg-muted rounded-lg transition-colors"
-              >
-                <User className="w-6 h-6 md:w-7 md:h-7" />
-              </button>
+          <button
+            onClick={toggleCart}
+            className="relative p-2 rounded-lg hover:bg-yellow-100 transition"
+          >
+            <ShoppingCart className="w-6 h-6" style={{ color: '#3A2E21' }} />
+            {cartItemsCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-yellow-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {cartItemsCount > 99 ? '99+' : cartItemsCount}
+              </span>
             )}
-          </div>
+          </button>
+
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="w-11 h-11 rounded-full bg-yellow-600 flex items-center justify-center text-white font-medium cursor-pointer">
+                  {user.email?.charAt(0).toUpperCase()}
+                </div>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent
+                className="w-48 bg-white"
+                sideOffset={8}
+                style={{
+                  border: '1px solid rgba(214,196,166,0.35)',
+                }}
+              >
+                <DropdownMenuItem onClick={() => navigate('/profile')}>
+                  <User className="mr-2 h-4 w-4" /> Profile
+                </DropdownMenuItem>
+
+                {isAdmin && (
+                  <DropdownMenuItem onClick={() => navigate('/admin')}>
+                    <User className="mr-2 h-4 w-4" /> Admin Panel
+                  </DropdownMenuItem>
+                )}
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem onClick={signOut}>
+                  <LogOut className="mr-2 h-4 w-4" /> Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <button
+              onClick={() => navigate('/auth')}
+              className="p-2 rounded-lg hover:bg-yellow-100 transition"
+            >
+              <User className="w-6 h-6" style={{ color: '#3A2E21' }} />
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Mobile Navbar for small screens - New implementation */}
-      <div className="md:hidden flex items-center justify-between py-3 border-b px-4">
-        {/* Left: Hamburger Menu */}
-        <button 
+      {/* MOBILE HEADER */}
+      <div className="md:hidden flex items-center justify-between h-14 px-3 border-b border-yellow-300 bg-[#FAF3E0]">
+        <button
           onClick={toggleMobileMenu}
-          className="p-2 hover:bg-muted rounded-lg transition-colors"
+          className="p-1.5 rounded-md hover:bg-yellow-100 transition"
         >
-          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          {isMobileMenuOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
         </button>
 
-        {/* Center: Logo */}
-        <Link to="/" className="flex items-center justify-center">
-          <img 
-            src={logoImage} 
-            alt="Super Sweets Logo" 
-            className="w-16 h-16 object-contain"
-          />
-        </Link>
+<div className="flex-1 flex justify-center items-center relative">
+  <Link to="/" className="flex items-center">
+    <motion.img
+      src={logoImage}
+      alt="Super Sweets"
+      className="
+        h-[68px]               /* bigger */
+        w-auto 
+        object-contain
+        translate-x-[6px]     /* move slightly RIGHT */
+        translate-y-[4px]     /* move slightly DOWN */
+        -mt-[4px] -mb-[4px]   /* keep inside header without overflow */
+      "
+      whileHover={{ scale: 1.03 }}
+      transition={{ duration: 0.25 }}
+    />
+  </Link>
+</div>
 
-        {/* Right: Search and Cart */}
         <div className="flex items-center space-x-2">
-          <button 
+          <button
             onClick={() => setIsSearchOpen(true)}
-            className="p-2 hover:bg-muted rounded-lg transition-colors"
+            className="p-1.5 rounded-md hover:bg-yellow-100 transition"
           >
-            <Search className="w-6 h-6" />
+            <Search className="w-5 h-5" />
           </button>
 
-          <button 
+          <button
             onClick={toggleCart}
-            className="relative p-2 hover:bg-muted rounded-lg transition-colors"
+            className="relative p-1.5 rounded-md hover:bg-yellow-100 transition"
           >
-            <ShoppingCart className="w-6 h-6" />
+            <ShoppingCart className="w-5 h-5" />
             {cartItemsCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-yellow-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
                 {cartItemsCount > 99 ? '99+' : cartItemsCount}
               </span>
             )}
@@ -262,160 +258,109 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* MOBILE BOTTOM SHEET MENU */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
-              className="fixed inset-0 bg-black/50 z-40 md:hidden"
+              className="fixed inset-0 bg-black/40 z-[40]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={closeMobileMenu}
             />
-              
-            {/* Mobile Menu - Sliding from bottom to top */}
+
             <motion.div
-              className="fixed bottom-0 left-0 right-0 bg-background border-t shadow-lg z-50 md:hidden"
-              initial={{ y: "100%" }}
+              className="fixed bottom-0 left-0 right-0 bg-[#FAF3E0] rounded-t-3xl shadow-xl z-[50] p-6 border-t border-yellow-900/20"
+              initial={{ y: '100%' }}
               animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 22, stiffness: 260 }}
             >
-              <div className="container mx-auto px-4 py-4 max-h-[70vh] overflow-y-auto">
-                {/* Mobile Header with Logo and Icons - Reordered layout */}
-                <div className="flex items-center justify-between mb-4 pb-4 border-b">
-                  {/* Menu Button (Hamburger) */}
-                  <button 
-                    onClick={toggleMobileMenu}
-                    className="p-2 hover:bg-muted rounded-lg transition-colors"
+              <h2 className="text-xl font-semibold text-yellow-700 mb-4 tracking-wide">
+                Menu
+              </h2>
+
+              <nav className="space-y-3 mb-4">
+                {[
+                  { to: '/', label: 'Home', icon: Home },
+                  { to: '/products', label: 'Sweets', icon: Package },
+                  { to: '/about', label: 'About', icon: Info },
+                  { to: '/contact', label: 'Contact', icon: Phone },
+                ].map((item, i) => (
+                  <motion.button
+                    key={i}
+                    onClick={() => handleNavigation(item.to)}
+                    className="flex items-center space-x-3 w-full p-3 rounded-lg bg-white hover:bg-yellow-50 transition text-left"
+                    whileTap={{ scale: 0.96 }}
                   >
-                    <X className="w-6 h-6" />
+                    <item.icon className="w-5 h-5 text-yellow-700" />
+                    <span className="font-medium">{item.label}</span>
+                  </motion.button>
+                ))}
+              </nav>
+
+              {/* User */}
+              {user ? (
+                <div className="pt-3 border-t border-yellow-300">
+                  <div className="flex items-center space-x-3 bg-white p-3 rounded-lg mb-3">
+                    <div className="w-10 h-10 bg-yellow-600 rounded-full flex items-center justify-center text-white font-medium">
+                      {user.email?.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-medium truncate">
+                        {profile?.full_name || 'User'}
+                      </p>
+                      <p className="text-sm text-gray-500 truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => handleNavigation('/profile')}
+                    className="flex items-center w-full space-x-3 p-3 rounded-lg hover:bg-yellow-50"
+                  >
+                    <User className="w-5 h-5 text-yellow-700" />
+                    <span className="font-medium">My Profile</span>
                   </button>
 
-                  {/* App Name */}
-                  <span className="text-xl font-bold text-primary lobster-font logo-glow">
-                    SuperSweets
-                  </span>
+                  {isAdmin && (
+                    <button
+                      onClick={() => handleNavigation('/admin')}
+                      className="flex items-center w-full space-x-3 p-3 rounded-lg hover:bg-yellow-50"
+                    >
+                      <User className="w-5 h-5 text-yellow-700" />
+                      <span className="font-medium">Admin Panel</span>
+                    </button>
+                  )}
 
-                  {/* Spacer */}
-                  <div></div>
+                  <button
+                    onClick={signOut}
+                    className="flex items-center w-full space-x-3 p-3 rounded-lg mt-2 text-red-600 hover:bg-red-100"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    <span className="font-medium">Sign Out</span>
+                  </button>
                 </div>
-
-                {/* Navigation Links */}
-                <nav className="space-y-2 mb-4">
-                  <motion.button
-                    onClick={() => handleNavigation('/')}
-                    className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                    whileHover={{ x: 5 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Home className="w-5 h-5 text-primary" />
-                    <span className="font-medium">Home</span>
-                  </motion.button>
-                    
-                  <motion.button
-                    onClick={() => handleNavigation('/products')}
-                    className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                    whileHover={{ x: 5 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Package className="w-5 h-5 text-primary" />
-                    <span className="font-medium">Sweets</span>
-                  </motion.button>
-                    
-                  <motion.button
-                    onClick={() => handleNavigation('/about')}
-                    className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                    whileHover={{ x: 5 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Info className="w-5 h-5 text-primary" />
-                    <span className="font-medium">About</span>
-                  </motion.button>
-                    
-                  <motion.button
-                    onClick={() => handleNavigation('/contact')}
-                    className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                    whileHover={{ x: 5 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Phone className="w-5 h-5 text-primary" />
-                    <span className="font-medium">Contact</span>
-                  </motion.button>
-                </nav>
-
-                {/* User Section - Mobile */}
-                {user ? (
-                  <motion.div 
-                    className="border-t pt-4 space-y-2"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <div className="flex items-center space-x-3 p-3 bg-muted/50 rounded-lg">
-                      <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                        <span className="text-primary-foreground font-medium">
-                          {user.email?.charAt(0).toUpperCase()}
-                        </span>
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium truncate">{profile?.full_name || 'User'}</p>
-                        <p className="text-sm text-muted-foreground truncate">{user.email}</p>
-                      </div>
-                    </div>
-                      
-                    <button
-                      onClick={() => handleNavigation('/profile')}
-                      className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                    >
-                      <User className="w-5 h-5 text-primary" />
-                      <span className="font-medium">My Profile</span>
-                    </button>
-                      
-                    {isAdmin && (
-                      <button
-                        onClick={() => handleNavigation('/admin')}
-                        className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left"
-                      >
-                        <User className="w-5 h-5 text-primary" />
-                        <span className="font-medium">Admin Panel</span>
-                      </button>
-                    )}
-                      
-                    <button
-                      onClick={signOut}
-                      className="flex items-center space-x-3 w-full p-3 hover:bg-muted rounded-lg transition-colors text-left text-destructive"
-                    >
-                      <LogOut className="w-5 h-5" />
-                      <span className="font-medium">Sign Out</span>
-                    </button>
-                  </motion.div>
-                ) : (
-                  <motion.div 
-                    className="border-t pt-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <button
-                      onClick={() => handleNavigation('/auth')}
-                      className="flex items-center justify-center space-x-2 w-full p-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
-                    >
-                      <User className="w-5 h-5" />
-                      <span className="font-medium">Sign In / Register</span>
-                    </button>
-                  </motion.div>
-                )}
-              </div>
+              ) : (
+                <button
+                  onClick={() => handleNavigation('/auth')}
+                  className="mt-3 w-full p-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition"
+                >
+                  Sign In / Register
+                </button>
+              )}
             </motion.div>
           </>
         )}
       </AnimatePresence>
 
       {/* Search Sidebar */}
-      <SearchSidebar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <SearchSidebar
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
     </motion.header>
   );
 };

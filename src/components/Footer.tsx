@@ -10,172 +10,142 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ isAdminRoute = false }) => {
-  // Don't render footer content for admin routes
-  if (isAdminRoute) {
-    return null;
-  }
+  if (isAdminRoute) return null;
 
   const { settings, loading } = useSettings();
 
-  // Show loading state or fallback values
   const contactInfo = {
     phone: settings?.store_phone || '+91 9996616153',
     email: settings?.store_email || 'contact@supersweets.fit',
-    address: settings?.store_address || 'Shop number 5, Patel Nagar,\nHansi road, Patiala chowk,\nJIND (Haryana) 126102',
-    storeName: settings?.store_name || 'SuperSweets'
+    address:
+      settings?.store_address ||
+      'Shop number 5, Patel Nagar,\nHansi road, Patiala chowk,\nJIND (Haryana) 126102',
+    storeName: settings?.store_name || 'SuperSweets',
   };
 
   return (
-    <footer className="bg-primary text-white mt-16">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
-          {/* Brand Section */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <img 
-                src={logoImage} 
-                alt="SuperSweets Logo" 
-                className="w-8 h-8 object-contain"
-              />
-              <h3 className="text-2xl font-bold text-secondary">{contactInfo.storeName}</h3>
+    <footer className="bg-[#CB9730] text-white mt-16">
+      <div className="container mx-auto px-6 py-14">
+
+        {/* GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+
+          {/* BRAND */}
+          <div className="space-y-5">
+            <div className="flex items-center space-x-3">
+              <img src={logoImage} alt="SuperSweets Logo" className="w-10 h-10 object-contain" />
+              <h3 className="text-2xl font-bold text-[#3A2E21]">
+                {contactInfo.storeName}
+              </h3>
             </div>
-            <p className="text-gray-300">
-              Your premier destination for premium sweets and desserts. We bring the authentic taste of traditional sweets with a modern twist, delivered fresh to your doorstep.
+
+            <p className="text-white/90 leading-relaxed">
+              Authentic sweets made fresh daily using age-old recipes & premium ingredients.
             </p>
-            <div className="flex space-x-4">
-              <Facebook className="h-5 w-5 hover:text-primary cursor-pointer transition-colors" />
-              <Twitter className="h-5 w-5 hover:text-primary cursor-pointer transition-colors" />
-              <Instagram className="h-5 w-5 hover:text-primary cursor-pointer transition-colors" />
-              <Youtube className="h-5 w-5 hover:text-primary cursor-pointer transition-colors" />
+
+            <div className="flex space-x-4 pt-2">
+              {[Facebook, Twitter, Instagram, Youtube].map((Icon, i) => (
+                <Icon
+                  key={i}
+                  className="h-5 w-5 text-white/90 hover:text-[#3A2E21] cursor-pointer transition-colors"
+                />
+              ))}
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* QUICK LINKS */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Quick Links</h4>
-            <div className="space-y-2">
-              <Link to="/" className="block text-gray-300 hover:text-primary transition-colors">
-                Home
-              </Link>
-              <Link to="/products" className="block text-gray-300 hover:text-primary transition-colors">
-                All Sweets
-              </Link>
-              <Link to="/about" className="block text-gray-300 hover:text-primary transition-colors">
-                About Us
-              </Link>
-              <Link to="/contact" className="block text-gray-300 hover:text-primary transition-colors">
-                Contact Us
-              </Link>
-              <Link to="/cart" className="block text-gray-300 hover:text-primary transition-colors">
-                Shopping Cart
-              </Link>
+            <h4 className="text-lg font-semibold text-[#3A2E21]">Quick Links</h4>
+
+            <div className="space-y-2 text-white/90">
+              <Link to="/" className="block hover:text-[#3A2E21]">Home</Link>
+              <Link to="/products" className="block hover:text-[#3A2E21]">All Sweets</Link>
+              <Link to="/about" className="block hover:text-[#3A2E21]">About Us</Link>
+              <Link to="/contact" className="block hover:text-[#3A2E21]">Contact Us</Link>
+              <Link to="/cart" className="block hover:text-[#3A2E21]">Shopping Cart</Link>
             </div>
           </div>
 
-          {/* Account & Services */}
+          {/* ACCOUNT & SERVICES */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Account & Services</h4>
-            <div className="space-y-2">
-              <Link to="/profile" className="block text-gray-300 hover:text-primary transition-colors">
-                My Account
-              </Link>
-              <Link to="/auth" className="block text-gray-300 hover:text-primary transition-colors">
-                Login / Register
-              </Link>
-              <Link to="/checkout" className="block text-gray-300 hover:text-primary transition-colors">
-                Checkout
-              </Link>
-              <Link to="/products?filter=bestsellers" className="block text-gray-300 hover:text-primary transition-colors">
+            <h4 className="text-lg font-semibold text-[#3A2E21]">Account & Services</h4>
+
+            <div className="space-y-2 text-white/90">
+              <Link to="/profile" className="block hover:text-[#3A2E21]">My Account</Link>
+              <Link to="/auth" className="block hover:text-[#3A2E21]">Login / Register</Link>
+              <Link to="/checkout" className="block hover:text-[#3A2E21]">Checkout</Link>
+              <Link to="/products?filter=bestsellers" className="block hover:text-[#3A2E21]">
                 Bestsellers
               </Link>
-              <Link to="/products?filter=new_arrivals" className="block text-gray-300 hover:text-primary transition-colors">
+              <Link to="/products?filter=new_arrivals" className="block hover:text-[#3A2E21]">
                 New Arrivals
               </Link>
             </div>
           </div>
 
-          {/* Sweet Categories */}
+          {/* CATEGORIES */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Sweet Categories</h4>
-            <div className="space-y-2">
-              <Link to="/products" className="block text-gray-300 hover:text-primary transition-colors">
-                Traditional Sweets
-              </Link>
-              <Link to="/products" className="block text-gray-300 hover:text-primary transition-colors">
-                Fusion Desserts
-              </Link>
-              <Link to="/products" className="block text-gray-300 hover:text-primary transition-colors">
-                Seasonal Specials
-              </Link>
-              <Link to="/products" className="block text-gray-300 hover:text-primary transition-colors">
-                Gift Boxes
-              </Link>
-              <Link to="/products" className="block text-gray-300 hover:text-primary transition-colors">
-                Vegan Options
-              </Link>
+            <h4 className="text-lg font-semibold text-[#3A2E21]">Sweet Categories</h4>
+
+            <div className="space-y-2 text-white/90">
+              <Link to="/products" className="block hover:text-[#3A2E21]">Traditional Sweets</Link>
+              <Link to="/products" className="block hover:text-[#3A2E21]">Dry Fruit Sweets</Link>
+              <Link to="/products" className="block hover:text-[#3A2E21]">Fusion Desserts</Link>
+              <Link to="/products" className="block hover:text-[#3A2E21]">Gift Hampers</Link>
+              <Link to="/products" className="block hover:text-[#3A2E21]">Vegan Options</Link>
             </div>
           </div>
 
-          {/* Contact Info */}
+          {/* CONTACT */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Contact Us</h4>
-            <div className="space-y-3">
+            <h4 className="text-lg font-semibold text-[#3A2E21]">Contact Us</h4>
+
+            <div className="space-y-4 text-white/90">
               <div className="flex items-center space-x-3">
-                <Phone className="h-4 w-4 text-primary" />
-                <span className="text-gray-300">
-                  {loading ? 'Supersweets' : contactInfo.phone}
-                </span>
+                <Phone className="h-4 w-4 text-[#3A2E21]" />
+                <span>{contactInfo.phone}</span>
               </div>
+
               <div className="flex items-center space-x-3">
-                <Mail className="h-4 w-4 text-primary" />
-                <span className="text-gray-300">
-                  {loading ? 'Supersweets' : contactInfo.email}
-                </span>
+                <Mail className="h-4 w-4 text-[#3A2E21]" />
+                <span>{contactInfo.email}</span>
               </div>
+
               <div className="flex items-start space-x-3">
-                <MapPin className="h-4 w-4 text-primary mt-1" />
-                <span className="text-gray-300">
-                  {loading ? 'Supersweets' : contactInfo.address.split('\n').map((line, index) => (
-                    <span key={index}>
-                      {line}
-                      {index < contactInfo.address.split('\n').length - 1 && <br />}
-                    </span>
-                  ))}
-                </span>
+                <MapPin className="h-4 w-4 text-[#3A2E21] mt-1" />
+                <span className="whitespace-pre-line">{contactInfo.address}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-8">
-          <MarqueeAnimation 
-            direction="left" 
-            baseVelocity={-2}
-            className="text-gray-300 py-2 text-sm hover:text-secondary transition-colors"
+        {/* Marquee & Bottom Bar */}
+        <div className="mt-12 pt-8 border-t border-white/30">
+          <MarqueeAnimation
+            direction="left"
+            baseVelocity={-1.2}
+            className="text-white/90 py-3 text-sm"
           >
-            Sweetness delivered to your doorstep • Premium quality ingredients • Freshly made daily • Fast and reliable delivery
+            Freshly Made • Premium Ingredients • PAN-India Delivery • 48+ Years of Legacy
           </MarqueeAnimation>
+
           <div className="flex flex-col md:flex-row justify-between items-center mt-4">
-            <p className="text-gray-300 text-sm">
+            <p className="text-white/90 text-sm">
               © 2025 {contactInfo.storeName}. All rights reserved.
             </p>
-            <div className="flex flex-wrap gap-6 mt-4 md:mt-0 items-center">
-              <Link to="/about" className="text-gray-300 hover:text-primary text-sm transition-colors">
-                About Us
-              </Link>
-              <Link to="/contact" className="text-gray-300 hover:text-primary text-sm transition-colors">
-                Contact
-              </Link>
-              <Link to="/products" className="text-gray-300 hover:text-primary text-sm transition-colors">
-                Sweets
-              </Link>
-              <Link to="/auth" className="text-gray-300 hover:text-primary text-sm transition-colors">
-                Login
-              </Link>
+
+            <div className="flex flex-wrap gap-6 mt-4 md:mt-0 items-center text-white/90">
+              <Link to="/about" className="hover:text-[#3A2E21] text-sm">About Us</Link>
+              <Link to="/contact" className="hover:text-[#3A2E21] text-sm">Contact</Link>
+              <Link to="/products" className="hover:text-[#3A2E21] text-sm">Sweets</Link>
+              <Link to="/auth" className="hover:text-[#3A2E21] text-sm">Login</Link>
+
+              {/* QR Code */}
               <QRCodeComponent />
             </div>
           </div>
         </div>
+
       </div>
     </footer>
   );
