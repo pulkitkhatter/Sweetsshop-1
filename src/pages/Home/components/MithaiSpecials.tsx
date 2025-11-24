@@ -1,18 +1,12 @@
+/** UPDATED MITHAI SPECIALS — BRAND PASTEL THEME **/
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Candy,
-  Plus,
-  Sparkles,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import ProductCard from "../../../components/ProductCard";
 import QuickViewModal from "../../../components/QuickViewModal";
 import { supabase } from "@/integrations/supabase/client";
 import { useStore } from "@/store/useStore";
 
-// Product Interface
 interface Product {
   id: string;
   name: string;
@@ -39,15 +33,9 @@ const MithaiSpecials = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerView, setItemsPerView] = useState(4);
 
-  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(
-    null
-  );
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
-
-  // Hover state
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-
-  // Auto-scroll
   const [lastManualAction, setLastManualAction] = useState(0);
 
   useEffect(() => {
@@ -59,15 +47,13 @@ const MithaiSpecials = () => {
 
   useEffect(() => {
     if (mithaiProducts.length > itemsPerView) {
-      const interval = setInterval(() => {
+      const timer = setInterval(() => {
         if (Date.now() - lastManualAction < 10000) return;
-
         setCurrentIndex((prev) =>
           prev >= mithaiProducts.length - itemsPerView ? 0 : prev + 1
         );
       }, 4500);
-
-      return () => clearInterval(interval);
+      return () => clearInterval(timer);
     }
   }, [mithaiProducts, itemsPerView, lastManualAction]);
 
@@ -86,10 +72,7 @@ const MithaiSpecials = () => {
         .ilike("name", "mithai")
         .single();
 
-      if (!categoryData) {
-        setLoading(false);
-        return;
-      }
+      if (!categoryData) return setLoading(false);
 
       const { data: products } = await supabase
         .from("products")
@@ -118,8 +101,6 @@ const MithaiSpecials = () => {
         })) || [];
 
       setMithaiProducts(formatted);
-    } catch (err) {
-      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -139,74 +120,55 @@ const MithaiSpecials = () => {
     }
   };
 
-  const canGoNext = currentIndex < mithaiProducts.length - itemsPerView;
-  const canGoPrev = currentIndex > 0;
-
-  const handleQuickView = (e: any, product: Product) => {
-    e.stopPropagation();
-    setQuickViewProduct(product);
-    setIsQuickViewOpen(true);
-  };
-
-  const handleAdd = (e: any, product: Product) => {
-    e.stopPropagation();
-    addToCart(product);
-  };
-
-  const handleView = (product: Product) => {
-    navigate(`/product/${product.slug}`);
-  };
-
-  const getHoverImage = (imgs: string[] | undefined) => {
-    return imgs && imgs.length > 1 ? imgs[1] : imgs?.[0] || "/placeholder.svg";
-  };
-
   if (!loading && mithaiProducts.length === 0) return null;
 
   return (
-    <section className="py-10 bg-[#F7F4EF] relative overflow-hidden">
+    <section className="py-16 bg-[#E3CBC6] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[#2C1A12] font-serif tracking-tight">
+
+        {/* HEADER */}
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-black font-serif">
             Mithai Specials
           </h2>
-          <div className="w-14 h-1 bg-[#A97C50] mx-auto my-3 rounded-full"></div>
-          <p className="text-sm text-gray-600 max-w-lg mx-auto">
+
+          <div className="w-14 h-[3px] bg-[#BC8649] mx-auto my-3 rounded-full"></div>
+
+          <p className="text-black/70 text-sm max-w-lg mx-auto">
             Freshly made traditional sweets — handcrafted with love.
           </p>
         </div>
 
-        {/* Controls */}
+        {/* CONTROLS */}
         {!loading && mithaiProducts.length > itemsPerView && (
           <div className="flex justify-between mb-6">
             <button
               onClick={prev}
-              disabled={!canGoPrev}
+              disabled={currentIndex === 0}
               className={`p-2 rounded-full border transition ${
-                canGoPrev
-                  ? "border-[#A97C50] text-[#A97C50] hover:bg-[#A97C50] hover:text-white shadow"
-                  : "border-gray-300 text-gray-300 cursor-not-allowed"
+                currentIndex === 0
+                  ? "border-black/20 text-black/20 cursor-not-allowed"
+                  : "border-[#BC8649] text-[#BC8649] hover:bg-[#BC8649] hover:text-white shadow"
               }`}
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-5 h-5" />
             </button>
 
             <button
               onClick={next}
-              disabled={!canGoNext}
+              disabled={currentIndex >= mithaiProducts.length - itemsPerView}
               className={`p-2 rounded-full border transition ${
-                canGoNext
-                  ? "border-[#A97C50] text-[#A97C50] hover:bg-[#A97C50] hover:text-white shadow"
-                  : "border-gray-300 text-gray-300 cursor-not-allowed"
+                currentIndex >= mithaiProducts.length - itemsPerView
+                  ? "border-black/20 text-black/20 cursor-not-allowed"
+                  : "border-[#BC8649] text-[#BC8649] hover:bg-[#BC8649] hover:text-white shadow"
               }`}
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         )}
 
-        {/* Carousel */}
+        {/* CAROUSEL */}
         <div className="overflow-hidden">
           <div
             className="flex transition-transform duration-500"
@@ -217,20 +179,17 @@ const MithaiSpecials = () => {
             }}
           >
             {mithaiProducts.map((product) => (
-              <div
-                key={product.id}
-                className="px-1.5 w-full sm:w-1/2 lg:w-1/4 flex-shrink-0"
-              >
+              <div key={product.id} className="px-2 w-full sm:w-1/2 lg:w-1/4 flex-shrink-0">
                 <div
-                  className="bg-white rounded-xl shadow-md hover:shadow-xl transition p-3 cursor-pointer"
-                  onClick={() => handleView(product)}
+                  onClick={() => navigate(`/product/${product.slug}`)}
+                  className="bg-white rounded-2xl border border-[#DDDECB] shadow-md hover:shadow-xl p-4 transition cursor-pointer"
                 >
                   {/* Image */}
                   <div className="relative mb-4 rounded-lg overflow-hidden h-56">
                     <img
                       src={
                         hoveredId === product.id
-                          ? getHoverImage(product.images)
+                          ? (product.images?.[1] || product.image)
                           : product.image
                       }
                       onMouseEnter={() => setHoveredId(product.id)}
@@ -239,26 +198,26 @@ const MithaiSpecials = () => {
                     />
 
                     {product.isBestSeller && (
-                      <span className="absolute top-3 left-3 bg-[#A97C50] text-white px-2 py-1 text-xs rounded shadow">
+                      <span className="absolute top-3 left-3 bg-[#BC8649] text-white px-2 py-1 text-xs rounded shadow">
                         Bestseller
                       </span>
                     )}
                   </div>
 
                   {/* Title */}
-                  <h3 className="font-semibold text-[#2C1A12] text-base line-clamp-2 mb-1">
+                  <h3 className="font-semibold text-black text-base line-clamp-2 mb-1">
                     {product.name}
                   </h3>
 
                   {/* Price */}
                   <div className="flex items-center space-x-2 mb-3">
-                    <span className="text-lg font-bold text-[#2C1A12]">
+                    <span className="text-lg font-bold text-black">
                       ₹{product.price}
                     </span>
 
                     {product.originalPrice &&
                       product.originalPrice > product.price && (
-                        <span className="text-sm line-through text-gray-400">
+                        <span className="text-sm line-through text-black/50">
                           ₹{product.originalPrice}
                         </span>
                       )}
@@ -267,15 +226,22 @@ const MithaiSpecials = () => {
                   {/* Buttons */}
                   <div className="flex items-center space-x-2">
                     <button
-                      className="flex-1 bg-[#A97C50] hover:bg-[#8A643B] text-white py-2 rounded-lg text-sm shadow transition"
-                      onClick={(e) => handleQuickView(e, product)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setQuickViewProduct(product);
+                        setIsQuickViewOpen(true);
+                      }}
+                      className="flex-1 bg-[#BC8649] hover:bg-black text-white py-2 rounded-lg text-sm shadow transition"
                     >
                       Quick View
                     </button>
 
                     <button
-                      className="p-2 bg-[#2C1A12] hover:bg-[#40261A] text-white rounded-lg shadow transition"
-                      onClick={(e) => handleAdd(e, product)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product);
+                      }}
+                      className="p-2 bg-black hover:bg-[#BC8649] hover:text-white text-white rounded-lg shadow transition"
                     >
                       <Plus className="w-4 h-4" />
                     </button>
@@ -287,10 +253,10 @@ const MithaiSpecials = () => {
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-10">
           <button
             onClick={() => navigate("/products?category=Mithai")}
-            className="bg-[#2C1A12] hover:bg-[#4A2C20] text-white px-6 py-3 rounded-full shadow-md transition font-medium"
+            className="bg-[#BC8649] hover:bg-black text-white px-8 py-3 rounded-full shadow-lg transition font-semibold tracking-wide"
           >
             Explore All Mithai
           </button>

@@ -1,3 +1,4 @@
+/** UPDATED NEW ARRIVALS — PASTEL BRAND THEME **/
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Candy } from 'lucide-react';
@@ -32,7 +33,6 @@ const NewArrivals = () => {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
-  // Auto-scroll states
   const [autoScroll] = useState(true);
   const [lastManualAction, setLastManualAction] = useState(0);
 
@@ -46,7 +46,7 @@ const NewArrivals = () => {
   useEffect(() => {
     if (newArrivals.length > itemsPerView && autoScroll) {
       const interval = setInterval(() => {
-        if (Date.now() - lastManualAction < 10000) return; // Pause auto-scroll
+        if (Date.now() - lastManualAction < 10000) return;
         setCurrentIndex(prev => {
           const maxIndex = newArrivals.length - itemsPerView;
           return prev >= maxIndex ? 0 : prev + 1;
@@ -140,33 +140,36 @@ const NewArrivals = () => {
   if (newArrivals.length === 0 && !loading) return null;
 
   return (
-    <section className="py-8 bg-[#F8F5F0] relative overflow-hidden">
+    <section className="py-16 bg-[#ABCFB9] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative">
 
         {/* HEADER */}
-        <div className="text-center mb-6">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-[#2C1810] font-serif tracking-tight">
+        <div className="text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-black"
+              style={{ fontFamily: 'Merriweather, serif' }}>
             New Arrivals
           </h2>
-          <div className="w-12 h-[3px] bg-[#A67C58] mx-auto mt-2 rounded-full"></div>
-          <p className="text-gray-600 text-xs sm:text-sm mt-2 max-w-xl mx-auto">
-            Fresh sweets just added to our collection. Taste what’s new today.
+
+          <div className="w-12 h-[3px] bg-[#BC8649] mx-auto mt-2 rounded-full"></div>
+
+          <p className="text-black/70 text-sm md:text-base mt-3 max-w-xl mx-auto">
+            Fresh sweets added to our collection. Taste what’s new today.
           </p>
         </div>
 
         {/* CONTROLS */}
         {!loading && newArrivals.length > itemsPerView && (
-          <div className="flex justify-between mb-4">
+          <div className="flex justify-between mb-6">
             <button
               onClick={prevSlide}
               disabled={!canGoPrev}
               className={`p-2 rounded-full border transition ${
                 canGoPrev
-                  ? "border-[#A67C58] text-[#A67C58] hover:bg-[#A67C58] hover:text-white shadow"
-                  : "border-gray-300 text-gray-300 cursor-not-allowed"
+                  ? "border-[#BC8649] text-[#BC8649] hover:bg-[#BC8649] hover:text-white shadow"
+                  : "border-black/20 text-black/20 cursor-not-allowed"
               }`}
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-5 h-5" />
             </button>
 
             <button
@@ -174,11 +177,11 @@ const NewArrivals = () => {
               disabled={!canGoNext}
               className={`p-2 rounded-full border transition ${
                 canGoNext
-                  ? "border-[#A67C58] text-[#A67C58] hover:bg-[#A67C58] hover:text-white shadow"
-                  : "border-gray-300 text-gray-300 cursor-not-allowed"
+                  ? "border-[#BC8649] text-[#BC8649] hover:bg-[#BC8649] hover:text-white shadow"
+                  : "border-black/20 text-black/20 cursor-not-allowed"
               }`}
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         )}
@@ -190,8 +193,9 @@ const NewArrivals = () => {
             style={{ transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)` }}
           >
             {newArrivals.map((product) => (
-              <div key={product.id} className="px-1.5 w-full sm:w-1/2 lg:w-1/4 flex-shrink-0">
-                <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition p-3">
+              <div key={product.id} className="px-2 w-full sm:w-1/2 lg:w-1/4 flex-shrink-0">
+                <div className="bg-white rounded-2xl border border-[#DDDECB]
+                                shadow-md hover:shadow-xl transition p-4">
                   <ProductCard
                     product={product}
                     onQuickView={() => handleQuickView(product)}
@@ -203,11 +207,12 @@ const NewArrivals = () => {
           </div>
         </div>
 
-        {/* CTA */}
-        <div className="text-center mt-8">
+        {/* CTA BUTTON */}
+        <div className="text-center mt-10">
           <button
             onClick={() => navigate('/products')}
-            className="bg-[#2C1810] hover:bg-[#4A2C20] text-white px-6 py-2.5 rounded-full shadow transition text-sm font-semibold"
+            className="bg-[#BC8649] hover:bg-black text-white px-8 py-3 rounded-full 
+                       shadow-lg transition font-semibold tracking-wide"
           >
             Explore All New Products
           </button>

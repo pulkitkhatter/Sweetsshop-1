@@ -21,7 +21,7 @@ const QRCodeComponent: React.FC<QRCodeComponentProps> = ({
   const { toast } = useToast();
   
   // Get website URL from environment variables and append /products
-  const baseUrl = import.meta.env.VITE_APP_URL || 'https://www.daretodiet.fit/';
+  const baseUrl = import.meta.env.VITE_APP_URL || 'https://www.thesupersweets.com/';
   const websiteUrl = baseUrl.endsWith('/') ? `${baseUrl}products` : `${baseUrl}/products`;
   const appName = import.meta.env.VITE_APP_NAME || 'Dare To Diet';
 

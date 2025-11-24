@@ -18,9 +18,10 @@ const Home = () => {
    <main className="min-h-screen">
   <CuratedGiftingHero />
   <div className="space-y-4">
-    <GujarPakShowcase />     {/* showcase our signature sweet - Gujar Pak */}
+    <GujarPakShowcase />  
+       <BestSellers />    {/* showcase our signature sweet - Gujar Pak */}
     <CategoriesCarousel />   {/* let users explore sweet categories early */}
-    <BestSellers />          {/* showcase our most popular sweets */}
+          {/* showcase our most popular sweets */}
   
     <PromotionalBanner />    {/* promotional banner with special offers */}
     <NewArrivals />          {/* highlight fresh and exciting treats */}

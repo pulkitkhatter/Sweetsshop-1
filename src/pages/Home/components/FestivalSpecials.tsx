@@ -1,6 +1,7 @@
+/** UPDATED FESTIVAL SPECIALS — BRAND PASTEL THEME **/
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import QuickViewModal from '../../../components/QuickViewModal';
 import { useStore } from '@/store/useStore';
@@ -115,63 +116,35 @@ const FestivalSpecials = () => {
     }
   };
 
-  const canGoNext = currentIndex < festivalProducts.length - itemsPerView;
-  const canGoPrev = currentIndex > 0;
-
-  const handleQuickView = (e: any, product: Product) => {
-    e.stopPropagation();
-    setQuickViewProduct(product);
-    setIsQuickViewOpen(true);
-  };
-
-  const closeQuickView = () => {
-    setIsQuickViewOpen(false);
-    setQuickViewProduct(null);
-  };
-
-  const handleAddToCart = (e: any, product: Product) => {
-    e.stopPropagation();
-    addToCart(product);
-  };
-
-  const handleViewDetail = (product: Product) => {
-    navigate(`/product/${product.slug}`);
-  };
-
-  const getHoverImage = (images: string[] | undefined) => {
+  const getHoverImage = (images?: string[]) => {
     if (images && images.length > 1) return images[1];
     return images?.[0] || '/placeholder.svg';
   };
 
-  if (festivalProducts.length === 0 && !loading) return null;
+  if (!loading && festivalProducts.length === 0) return null;
 
   return (
-    <section className="py-16 bg-[#FAF3E0] relative overflow-hidden">
-      {/* Subtle background gradients */}
-      <div className="absolute inset-0 opacity-40 pointer-events-none">
-        <div className="absolute top-10 right-10 w-64 h-64 bg-white/40 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-white/30 rounded-full blur-3xl"></div>
-      </div>
-
+    <section className="py-16 bg-[#EBEBE8] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#3A2E21] font-raleway tracking-tight">
+
+        {/* Header */}
+        <div className="text-center mb-10">
+          <h2 className="text-3xl sm:text-4xl font-bold text-black font-serif">
             Festival Specials
           </h2>
-          <div className="w-24 h-[3px] bg-[#3A2E21] mx-auto rounded-full mt-3"></div>
+          <div className="w-20 h-[3px] bg-[#BC8649] mx-auto mt-3 rounded-full"></div>
         </div>
 
         {/* Controls */}
         {!loading && festivalProducts.length > itemsPerView && (
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-6">
             <button
               onClick={prevSlide}
-              disabled={!canGoPrev}
+              disabled={currentIndex === 0}
               className={`p-3 rounded-full border transition-all ${
-                canGoPrev
-                  ? 'border-[#3A2E21] text-[#3A2E21] hover:bg-[#3A2E21] hover:text-white shadow-sm'
-                  : 'border-gray-300 text-gray-400 cursor-not-allowed'
+                currentIndex === 0
+                  ? "border-black/20 text-black/20 cursor-not-allowed"
+                  : "border-[#BC8649] text-[#BC8649] hover:bg-[#BC8649] hover:text-white shadow"
               }`}
             >
               <ChevronLeft className="w-5 h-5" />
@@ -179,11 +152,11 @@ const FestivalSpecials = () => {
 
             <button
               onClick={nextSlide}
-              disabled={!canGoNext}
+              disabled={currentIndex >= festivalProducts.length - itemsPerView}
               className={`p-3 rounded-full border transition-all ${
-                canGoNext
-                  ? 'border-[#3A2E21] text-[#3A2E21] hover:bg-[#3A2E21] hover:text-white shadow-sm'
-                  : 'border-gray-300 text-gray-400 cursor-not-allowed'
+                currentIndex >= festivalProducts.length - itemsPerView
+                  ? "border-black/20 text-black/20 cursor-not-allowed"
+                  : "border-[#BC8649] text-[#BC8649] hover:bg-[#BC8649] hover:text-white shadow"
               }`}
             >
               <ChevronRight className="w-5 h-5" />
@@ -207,13 +180,10 @@ const FestivalSpecials = () => {
               }}
             >
               {festivalProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="w-full sm:w-1/2 lg:w-1/4 px-3 flex-shrink-0"
-                >
+                <div key={product.id} className="w-full sm:w-1/2 lg:w-1/4 px-3 flex-shrink-0">
                   <div
-                    onClick={() => handleViewDetail(product)}
-                    className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all p-4 cursor-pointer"
+                    onClick={() => navigate(`/product/${product.slug}`)}
+                    className="bg-white border border-[#DDDECB] rounded-xl shadow-md hover:shadow-xl transition-all p-4 cursor-pointer"
                   >
                     {/* Image */}
                     <div className="relative h-64 rounded-xl overflow-hidden mb-4">
@@ -221,7 +191,7 @@ const FestivalSpecials = () => {
                         src={
                           hoveredProductId === product.id
                             ? getHoverImage(product.images)
-                            : product.images?.[0] || '/placeholder.svg'
+                            : product.image
                         }
                         onMouseEnter={() => setHoveredProductId(product.id)}
                         onMouseLeave={() => setHoveredProductId(null)}
@@ -230,17 +200,17 @@ const FestivalSpecials = () => {
                     </div>
 
                     {/* Name */}
-                    <h3 className="text-lg font-semibold text-[#3A2E21] line-clamp-2">
+                    <h3 className="text-lg font-semibold text-black line-clamp-2">
                       {product.name}
                     </h3>
 
                     {/* Price */}
                     <div className="mt-2 mb-4">
-                      <span className="text-xl font-bold text-[#3A2E21]">
+                      <span className="text-xl font-bold text-black">
                         ₹{product.price}
                       </span>
                       {product.originalPrice && (
-                        <span className="ml-2 text-gray-500 line-through">
+                        <span className="ml-2 text-black/50 line-through">
                           ₹{product.originalPrice}
                         </span>
                       )}
@@ -250,14 +220,13 @@ const FestivalSpecials = () => {
                     <div className="flex gap-3">
                       <button
                         onClick={(e) => handleQuickView(e, product)}
-                        className="flex-1 bg-[#3A2E21] text-white py-2 rounded-xl hover:bg-opacity-90 transition-all"
+                        className="flex-1 bg-[#BC8649] hover:bg-black text-white py-2 rounded-lg transition"
                       >
                         Quick View
                       </button>
-
                       <button
                         onClick={(e) => handleAddToCart(e, product)}
-                        className="px-4 bg-[#3A2E21] text-white rounded-xl hover:bg-opacity-90 transition-all"
+                        className="px-4 bg-black hover:bg-[#BC8649] text-white rounded-lg transition"
                       >
                         +
                       </button>
@@ -269,11 +238,11 @@ const FestivalSpecials = () => {
           )}
         </div>
 
-        {/* View All Button */}
-        <div className="text-center mt-12">
+        {/* CTA */}
+        <div className="text-center mt-10">
           <button
             onClick={() => navigate('/products')}
-            className="bg-[#3A2E21] text-white px-8 py-3 rounded-full shadow hover:bg-opacity-90 transition-all"
+            className="bg-[#BC8649] hover:bg-black text-white px-8 py-3 rounded-full shadow-lg transition font-semibold tracking-wide"
           >
             View All Festival Specials
           </button>

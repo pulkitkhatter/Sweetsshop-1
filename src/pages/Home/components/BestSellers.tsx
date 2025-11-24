@@ -1,11 +1,29 @@
-/** SAME LOGIC — ONLY VISUAL ENHANCEMENT **/
-
+/** UPDATED BEST SELLERS WITH MOTION **/
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight, Candy } from "lucide-react";
+import { motion } from "framer-motion";  // ← added
 import ProductCard from "../../../components/ProductCard";
 import QuickViewModal from "../../../components/QuickViewModal";
 import { supabase } from "@/integrations/supabase/client";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const itemFade = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.45 } },
+};
 
 const BestSellers = () => {
   const navigate = useNavigate();
@@ -98,38 +116,63 @@ const BestSellers = () => {
   };
 
   const handleViewDetail = (product: any) => {
-    const slug = product.sku || product.id;
-    navigate(`/product/${slug}`);
+    navigate(`/product/${product.sku || product.id}`);
   };
 
   return (
-    <section className="pt-20 pb-14 bg-[#FAF3E0] relative overflow-hidden">
+    <section className="pt-20 pb-14 bg-[#151515] relative overflow-hidden">
 
-      {/* Divider from Categories */}
-      <div className="absolute top-0 left-0 w-full h-12 bg-gradient-to-b from-[#FFF9EF] to-[#FAF3E0]"></div>
+      {/* Fade Divider */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="absolute top-0 left-0 w-full h-10 bg-gradient-to-b from-[#FFDCDB] to-[#DDDECB]"
+      />
 
       {/* Heading */}
-      <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#3A2E21]">
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        className="text-center mb-10"
+      >
+        <h2
+          className="text-3xl md:text-4xl font-bold text-white"
+          style={{ fontFamily: "Merriweather, serif" }}
+        >
           Best Sellers
         </h2>
-        <div className="w-14 h-[3px] bg-[#D4A017] mx-auto mt-2 rounded-full"></div>
-        <p className="text-gray-600 text-sm md:text-base mt-3">
+
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: "3.5rem" }}
+          transition={{ duration: 0.5 }}
+          className="h-[3px] bg-[#EBEBE8] mx-auto mt-2 rounded-full"
+        />
+
+        <p className="text-white/70 text-sm md:text-base mt-3">
           Our most-loved sweets, trusted by thousands.
         </p>
-      </div>
+      </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 relative">
 
+        {/* Arrow Buttons */}
         {!loading && bestSellers.length > itemsPerView && (
-          <div className="flex justify-between mb-8">
+          <motion.div
+            className="flex justify-between mb-8"
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+          >
             <button
               onClick={prevSlide}
               disabled={!canGoPrev}
               className={`p-3 rounded-full border transition ${
                 canGoPrev
-                  ? "border-[#D4A017] text-[#D4A017] hover:bg-[#D4A017] hover:text-white shadow-md"
-                  : "border-gray-300 text-gray-300 cursor-not-allowed"
+                  ? "border-[#EBEBE8] text-[#EBEBE8] hover:bg-[#EBEBE8] hover:text-black shadow"
+                  : "border-black/20 text-black/20 cursor-not-allowed"
               }`}
             >
               <ChevronLeft className="w-5 h-5" />
@@ -140,16 +183,23 @@ const BestSellers = () => {
               disabled={!canGoNext}
               className={`p-3 rounded-full border transition ${
                 canGoNext
-                  ? "border-[#D4A017] text-[#D4A017] hover:bg-[#D4A017] hover:text-white shadow-md"
-                  : "border-gray-300 text-gray-300 cursor-not-allowed"
+                  ? "border-[#EBEBE8] text-[#EBEBE8] hover:bg-[#EBEBE8] hover:text-black shadow"
+                  : "border-black/20 text-black/20 cursor-not-allowed"
               }`}
             >
               <ChevronRight className="w-5 h-5" />
             </button>
-          </div>
+          </motion.div>
         )}
 
-        <div className="overflow-hidden">
+        {/* Carousel */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+          className="overflow-hidden"
+        >
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -163,12 +213,16 @@ const BestSellers = () => {
                 transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`,
               }}
             >
-              {bestSellers.map((product) => (
-                <div
+              {bestSellers.map((product, idx) => (
+                <motion.div
+                  variants={itemFade}
                   key={product.id}
                   className="px-3 w-full sm:w-1/2 lg:w-1/4 flex-shrink-0"
                 >
-                  <div className="bg-white rounded-2xl shadow-[0_6px_22px_rgba(0,0,0,0.08)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.14)] p-5 h-[380px] transition-all hover:-translate-y-1 hover:scale-[1.02] cursor-pointer">
+                  <div className="bg-white rounded-2xl border border-[#CAE2B8] 
+                                  shadow-[0_6px_22px_rgba(0,0,0,0.06)]
+                                  hover:shadow-[0_10px_30px_rgba(0,0,0,0.12)]
+                                  p-5 h-[380px] transition-all hover:-translate-y-1 hover:scale-[1.02] cursor-pointer">
                     <ProductCard
                       product={{
                         ...product,
@@ -179,27 +233,40 @@ const BestSellers = () => {
                       onViewDetail={() => handleViewDetail(product)}
                     />
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-16">
-              <Candy className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">No bestsellers available</p>
-            </div>
+            <motion.div
+              className="text-center py-16"
+              variants={fadeUp}
+            >
+              <Candy className="w-16 h-16 text-black/20 mx-auto mb-4" />
+              <p className="text-black/60">No bestsellers available</p>
+            </motion.div>
           )}
-        </div>
+        </motion.div>
 
-        <div className="text-center mt-12">
-          <button
+        {/* View All Button */}
+        <motion.div
+          className="text-center mt-12"
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="show"
+        >
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.04 }}
             onClick={() => navigate("/products")}
-            className="bg-[#D4A017] hover:bg-[#bb8d14] text-white px-8 py-3 rounded-full shadow-lg transition font-semibold"
+            className="bg-[#EBEBE8] hover:bg-white text-black px-8 py-4 rounded-full 
+                       shadow-lg transition font-semibold tracking-wide"
           >
             View All Sweets
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
 
+      {/* Quick View */}
       {isQuickViewOpen && quickViewProduct && (
         <QuickViewModal
           product={quickViewProduct}

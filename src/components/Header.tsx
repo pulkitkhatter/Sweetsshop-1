@@ -1,4 +1,4 @@
-// PREMIUM LUXURY HEADER – CREAM + YELLOW GOLD THEME
+// PREMIUM LUXURY HEADER – PASTEL PINK + GOLD THEME
 
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -64,63 +64,64 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
   return (
     <motion.header
       className="sticky top-0 z-50 shadow-sm"
-      style={{ backgroundColor: '#FAF3E0' }} // Full Cream Background
+      style={{ backgroundColor: '#E3CBC6' }}
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.45, ease: 'easeOut' }}
     >
-      {/* GOLDEN MARQUEE */}
+      {/* TOP MARQUEE */}
       {settings?.store_phone && (
-        <div className="bg-gradient-to-r from-yellow-600 to-yellow-500 text-white py-1.5 overflow-hidden">
+        <div className="bg-[#000000] text-white py-1.5 overflow-hidden">
           <div className="animate-marquee whitespace-nowrap text-sm font-semibold opacity-90">
-            {Array(6)
-              .fill(null)
-              .map((_, i) => (
-                <span key={i} className="mx-6 tracking-wide">
-              ✦ PAN India Delivery • International Shipping Available • Order Now: {settings.store_phone} ✦
-
-                </span>
-              ))}
+            {Array(6).fill(null).map((_, i) => (
+              <span key={i} className="mx-6 tracking-wide">
+                ✦ PAN India Delivery • International Shipping Available • Order Now: {settings.store_phone} ✦
+              </span>
+            ))}
           </div>
         </div>
       )}
 
       {/* DESKTOP HEADER */}
-  <div
-  className="container mx-auto md:flex hidden items-center justify-between h-24"
-  style={{ paddingTop: '0px', paddingBottom: '0px' }} // removes vertical squeeze
->
+      <div className="container mx-auto md:flex hidden items-center justify-between h-24">
+        
+        {/* LOGO + TEXT */}
+        <Link to="/" className="flex items-center space-x-4">
+          <motion.img
+            src={logoImage}
+            alt="Super Sweets"
+            className="h-[96px] w-auto object-contain drop-shadow-xl"
+            whileHover={{ scale: 1.05 }}
+          />
 
-{/* Logo */}
-<Link to="/" className="flex items-center space-x-4">
+          <div className="flex flex-col justify-center -mt-1">
+            <h1
+              className="text-[46px] leading-[1] font-bold"
+              style={{
+                color: '#BCA05E',
+                fontFamily: `'Playfair Display', serif`,
+                letterSpacing: '-0.5px',
+              }}
+            >
+              Super Sweets
+            </h1>
 
-<motion.img
-  src={logoImage}
-  alt="Super Sweets"
-  className="h-[96px] w-auto object-contain -mt-[8px] -mb-[8px] drop-shadow-xl"
-  whileHover={{ scale: 1.05 }}
-  transition={{ duration: 0.3 }}
-/>
+            <p
+              className="text-[14px] leading-[1.1]"
+              style={{
+                color: '#BCA05E',
+                fontFamily: `'Playfair Display', serif`,
+                fontStyle: 'italic',
+                letterSpacing: '0.4px',
+              }}
+            >
+              The Gajar Pak Atelier
+            </p>
+          </div>
+        </Link>
 
-  <div className="flex flex-col justify-center -mt-1"> 
-    <h1
-      className="text-[46px] leading-[1] font-bold"
-      style={{ color: '#D4A017' }}
-    >
-      Super Sweets
-    </h1>
-    <p
-      className="text-[14px] leading-[1.1]"
-      style={{ color: '#6E5E51' }}
-    >
-      Premium Sweets & Desserts
-    </p>
-  </div>
-
-</Link>
-
-        {/* Desktop Navigation */}
-        <nav className="flex items-center space-x-10 text-lg font-medium">
+        {/* NAVBAR LINKS */}
+        <nav className="flex items-center space-x-10 text-lg">
           {[
             { label: 'Home', to: '/' },
             { label: 'Sweets', to: '/products' },
@@ -130,9 +131,12 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
             <Link
               key={i}
               to={item.to}
-              className="transition-colors"
+              className="transition"
               style={{
-                color: '#3A2E21',
+                color: '#000',
+                fontFamily: `'Playfair Display', serif`,
+                fontWeight: 500,
+                letterSpacing: '0.3px',
               }}
             >
               {item.label}
@@ -140,42 +144,39 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
           ))}
         </nav>
 
-        {/* Desktop Right Section */}
+        {/* RIGHT ICONS */}
         <div className="flex items-center space-x-4">
+
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="p-2 rounded-lg hover:bg-yellow-100 transition"
+            className="p-2 rounded-lg hover:bg-white/80 transition"
           >
-            <Search className="w-6 h-6" style={{ color: '#3A2E21' }} />
+            <Search className="w-6 h-6" style={{ color: '#BC8649' }} />
           </button>
 
           <button
             onClick={toggleCart}
-            className="relative p-2 rounded-lg hover:bg-yellow-100 transition"
+            className="relative p-2 rounded-lg hover:bg-white/80 transition"
           >
-            <ShoppingCart className="w-6 h-6" style={{ color: '#3A2E21' }} />
+            <ShoppingCart className="w-6 h-6" style={{ color: '#BC8649' }} />
             {cartItemsCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-yellow-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[#BC8649] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                 {cartItemsCount > 99 ? '99+' : cartItemsCount}
               </span>
             )}
           </button>
 
+          {/* USER DROPDOWN */}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <div className="w-11 h-11 rounded-full bg-yellow-600 flex items-center justify-center text-white font-medium cursor-pointer">
+                <div className="w-11 h-11 rounded-full bg-[#BC8649] flex items-center justify-center text-white font-medium cursor-pointer"
+                     style={{ fontFamily: `'Playfair Display', serif` }}>
                   {user.email?.charAt(0).toUpperCase()}
                 </div>
               </DropdownMenuTrigger>
 
-              <DropdownMenuContent
-                className="w-48 bg-white"
-                sideOffset={8}
-                style={{
-                  border: '1px solid rgba(214,196,166,0.35)',
-                }}
-              >
+              <DropdownMenuContent className="w-48 bg-white" sideOffset={8}>
                 <DropdownMenuItem onClick={() => navigate('/profile')}>
                   <User className="mr-2 h-4 w-4" /> Profile
                 </DropdownMenuItem>
@@ -196,61 +197,49 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
           ) : (
             <button
               onClick={() => navigate('/auth')}
-              className="p-2 rounded-lg hover:bg-yellow-100 transition"
+              className="p-2 rounded-lg hover:bg-white/80 transition"
             >
-              <User className="w-6 h-6" style={{ color: '#3A2E21' }} />
+              <User className="w-6 h-6" style={{ color: '#BC8649' }} />
             </button>
           )}
         </div>
       </div>
 
       {/* MOBILE HEADER */}
-      <div className="md:hidden flex items-center justify-between h-14 px-3 border-b border-yellow-300 bg-[#FAF3E0]">
+      <div className="md:hidden flex items-center justify-between h-14 px-3 border-b border-[#BC8649]/40 bg-[#FFDCDB]">
+
         <button
           onClick={toggleMobileMenu}
-          className="p-1.5 rounded-md hover:bg-yellow-100 transition"
+          className="p-1.5 rounded-md hover:bg-white/60 transition"
         >
-          {isMobileMenuOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
+          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
 
-<div className="flex-1 flex justify-center items-center relative">
-  <Link to="/" className="flex items-center">
-    <motion.img
-      src={logoImage}
-      alt="Super Sweets"
-      className="
-        h-[68px]               /* bigger */
-        w-auto 
-        object-contain
-        translate-x-[6px]     /* move slightly RIGHT */
-        translate-y-[4px]     /* move slightly DOWN */
-        -mt-[4px] -mb-[4px]   /* keep inside header without overflow */
-      "
-      whileHover={{ scale: 1.03 }}
-      transition={{ duration: 0.25 }}
-    />
-  </Link>
-</div>
+        {/* MOBILE LOGO ONLY */}
+        <div className="flex-1 flex justify-center">
+          <motion.img
+            src={logoImage}
+            alt="Super Sweets"
+            className="h-[68px] w-auto object-contain"
+            whileHover={{ scale: 1.03 }}
+          />
+        </div>
 
         <div className="flex items-center space-x-2">
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="p-1.5 rounded-md hover:bg-yellow-100 transition"
+            className="p-1.5 rounded-md hover:bg-white/60 transition"
           >
-            <Search className="w-5 h-5" />
+            <Search className="w-5 h-5" style={{ color: '#BC8649' }} />
           </button>
 
           <button
             onClick={toggleCart}
-            className="relative p-1.5 rounded-md hover:bg-yellow-100 transition"
+            className="relative p-1.5 rounded-md hover:bg-white/60 transition"
           >
-            <ShoppingCart className="w-5 h-5" />
+            <ShoppingCart className="w-5 h-5" style={{ color: '#BC8649' }} />
             {cartItemsCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-yellow-600 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[#BC8649] text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
                 {cartItemsCount > 99 ? '99+' : cartItemsCount}
               </span>
             )}
@@ -258,7 +247,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
         </div>
       </div>
 
-      {/* MOBILE BOTTOM SHEET MENU */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
@@ -271,13 +260,20 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
             />
 
             <motion.div
-              className="fixed bottom-0 left-0 right-0 bg-[#FAF3E0] rounded-t-3xl shadow-xl z-[50] p-6 border-t border-yellow-900/20"
+              className="fixed bottom-0 left-0 right-0 bg-[#FFDCDB] rounded-t-3xl shadow-xl z-[50] p-6 border-t border-[#BC8649]/30"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 22, stiffness: 260 }}
             >
-              <h2 className="text-xl font-semibold text-yellow-700 mb-4 tracking-wide">
+              <h2
+                className="text-xl font-semibold mb-4 tracking-wide"
+                style={{
+                  color: '#BC8649',
+                  fontFamily: `'Playfair Display', serif`,
+                  letterSpacing: '0.6px',
+                }}
+              >
                 Menu
               </h2>
 
@@ -291,46 +287,48 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
                   <motion.button
                     key={i}
                     onClick={() => handleNavigation(item.to)}
-                    className="flex items-center space-x-3 w-full p-3 rounded-lg bg-white hover:bg-yellow-50 transition text-left"
+                    className="flex items-center space-x-3 w-full p-3 rounded-lg bg-white hover:bg-[#FFE4E2] transition"
                     whileTap={{ scale: 0.96 }}
+                    style={{ fontFamily: `'Playfair Display', serif` }}
                   >
-                    <item.icon className="w-5 h-5 text-yellow-700" />
-                    <span className="font-medium">{item.label}</span>
+                    <item.icon className="w-5 h-5 text-[#BC8649]" />
+                    <span className="font-medium text-black">{item.label}</span>
                   </motion.button>
                 ))}
               </nav>
 
-              {/* User */}
+              {/* USER SECTION */}
               {user ? (
-                <div className="pt-3 border-t border-yellow-300">
+                <div className="pt-3 border-t border-[#BC8649]/30">
                   <div className="flex items-center space-x-3 bg-white p-3 rounded-lg mb-3">
-                    <div className="w-10 h-10 bg-yellow-600 rounded-full flex items-center justify-center text-white font-medium">
+                    <div
+                      className="w-10 h-10 bg-[#BC8649] rounded-full flex items-center justify-center text-white font-medium"
+                      style={{ fontFamily: `'Playfair Display', serif` }}
+                    >
                       {user.email?.charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
-                      <p className="font-medium truncate">
-                        {profile?.full_name || 'User'}
-                      </p>
-                      <p className="text-sm text-gray-500 truncate">
-                        {user.email}
-                      </p>
+                      <p className="font-medium truncate">{profile?.full_name || 'User'}</p>
+                      <p className="text-sm text-gray-600 truncate">{user.email}</p>
                     </div>
                   </div>
 
                   <button
                     onClick={() => handleNavigation('/profile')}
-                    className="flex items-center w-full space-x-3 p-3 rounded-lg hover:bg-yellow-50"
+                    className="flex items-center w-full space-x-3 p-3 rounded-lg hover:bg-[#FFE4E2]"
+                    style={{ fontFamily: `'Playfair Display', serif` }}
                   >
-                    <User className="w-5 h-5 text-yellow-700" />
+                    <User className="w-5 h-5 text-[#BC8649]" />
                     <span className="font-medium">My Profile</span>
                   </button>
 
                   {isAdmin && (
                     <button
                       onClick={() => handleNavigation('/admin')}
-                      className="flex items-center w-full space-x-3 p-3 rounded-lg hover:bg-yellow-50"
+                      className="flex items-center w-full space-x-3 p-3 rounded-lg hover:bg-[#FFE4E2]"
+                      style={{ fontFamily: `'Playfair Display', serif` }}
                     >
-                      <User className="w-5 h-5 text-yellow-700" />
+                      <User className="w-5 h-5 text-[#BC8649]" />
                       <span className="font-medium">Admin Panel</span>
                     </button>
                   )}
@@ -338,6 +336,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
                   <button
                     onClick={signOut}
                     className="flex items-center w-full space-x-3 p-3 rounded-lg mt-2 text-red-600 hover:bg-red-100"
+                    style={{ fontFamily: `'Playfair Display', serif` }}
                   >
                     <LogOut className="w-5 h-5" />
                     <span className="font-medium">Sign Out</span>
@@ -346,7 +345,12 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
               ) : (
                 <button
                   onClick={() => handleNavigation('/auth')}
-                  className="mt-3 w-full p-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition"
+                  className="mt-3 w-full p-3 bg-[#BC8649] text-white rounded-lg hover:bg-[#a97540] transition"
+                  style={{
+                    fontFamily: `'Playfair Display', serif`,
+                    fontWeight: 600,
+                    letterSpacing: '0.4px',
+                  }}
                 >
                   Sign In / Register
                 </button>
@@ -356,11 +360,8 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
         )}
       </AnimatePresence>
 
-      {/* Search Sidebar */}
-      <SearchSidebar
-        isOpen={isSearchOpen}
-        onClose={() => setIsSearchOpen(false)}
-      />
+      {/* SEARCH SIDEBAR */}
+      <SearchSidebar isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </motion.header>
   );
 };
