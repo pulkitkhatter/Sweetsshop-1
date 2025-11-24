@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import hero5 from "@/assets/banner.png";
 import hero2 from "@/assets/30.png";
 import hero3 from "@/assets/back.jpeg";
-import hero4 from "@/assets/6.jpeg";
+import hero4 from "@/assets/7.png";
 import hero1 from "@/assets/hero5.png";
 
 import { motion } from "framer-motion";
