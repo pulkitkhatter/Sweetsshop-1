@@ -206,7 +206,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
       </div>
 
       {/* MOBILE HEADER */}
-      <div className="md:hidden flex items-center justify-between h-14 px-3 border-b border-[#BC8649]/40 bg-[#FFDCDB]">
+<div className="md:hidden flex items-center justify-between h-14 px-3 border-b border-[#BC8649]/40 bg-[#E7CECA]">
 
         <button
           onClick={toggleMobileMenu}
@@ -260,7 +260,7 @@ const Header: React.FC<HeaderProps> = ({ isAdminRoute = false }) => {
             />
 
             <motion.div
-              className="fixed bottom-0 left-0 right-0 bg-[#FFDCDB] rounded-t-3xl shadow-xl z-[50] p-6 border-t border-[#BC8649]/30"
+              className="fixed bottom-0 left-0 right-0 bg-[#E7CECA] rounded-t-3xl shadow-xl z-[50] p-6 border-t border-[#BC8649]/30"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
