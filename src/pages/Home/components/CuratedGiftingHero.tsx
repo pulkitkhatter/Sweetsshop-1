@@ -3,13 +3,23 @@ import { Button } from "@/components/ui/button";
 import { MoveRight, PhoneCall, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-// Images
 import hero5 from "@/assets/banner.png";
-import hero2 from "@/assets/30.png";
-import hero3 from "@/assets/back.jpeg";
-import hero4 from "@/assets/7.png";
-import hero1 from "@/assets/hero5.png";
 
+// ⭐ SLIDE 2 (desktop + mobile)
+import hero2 from "@/assets/3.png";
+import hero2mobile from "@/assets/5.jpeg";
+
+// ⭐ SLIDE 3 (desktop + mobile)
+import hero3 from "@/assets/back.jpeg";
+import hero3mobile from "@/assets/backgound.png";
+
+import hero5mobile from "@/assets/banner.png";
+
+// ⭐ SLIDE 4 (desktop + mobile)
+import hero4desktop from "@/assets/7.png";
+import hero4mobile from "@/assets/giftingmobile.png";
+
+import hero1 from "@/assets/hero5.png";
 import { motion } from "framer-motion";
 
 const sliderData = [
@@ -23,21 +33,38 @@ const sliderData = [
     ctaText: "View Collection",
     image: hero1,
   },
+
+  // ⭐ SLIDE 2 → DESKTOP + MOBILE
   {
     id: 2,
     showText: false,
-    image: hero2,
+    image: {
+      desktop: hero2,
+      mobile: hero2mobile,
+    },
   },
+
+  // ⭐ SLIDE 3 → DESKTOP + MOBILE (NEW)
   {
     id: 3,
     showText: false,
-    image: hero3,
+    image: {
+      desktop: hero3,
+      mobile: hero3mobile,
+    },
   },
+
+  // ⭐ SLIDE 4 → DESKTOP + MOBILE
   {
     id: 4,
     showText: false,
-    image: hero4,
+    image: {
+      desktop: hero4desktop,
+      mobile: hero4mobile,
+    },
   },
+
+  // ⭐ SLIDE 5 → DESKTOP + MOBILE
   {
     id: 5,
     showText: true,
@@ -46,7 +73,10 @@ const sliderData = [
     description:
       "From weddings to corporates—order in bulk with attractive pricing and priority delivery.",
     ctaText: "Order Bulk",
-    image: hero5,
+    image: {
+      desktop: hero5,
+      mobile: hero5mobile,
+    },
   },
 ];
 
@@ -69,25 +99,40 @@ const CuratedGiftingHero = () => {
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
-  const nextSlide = () =>
-    goToSlide((currentSlide + 1) % sliderData.length);
-
+  const nextSlide = () => goToSlide((currentSlide + 1) % sliderData.length);
   const prevSlide = () =>
     goToSlide((currentSlide - 1 + sliderData.length) % sliderData.length);
 
   const data = sliderData[currentSlide];
 
+  // ⭐ Detect mobile
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  // ⭐ Choose correct image (desktop vs mobile)
+  const slideImage =
+    typeof data.image === "string"
+      ? data.image
+      : isMobile
+      ? data.image.mobile
+      : data.image.desktop;
+
+  // ⭐ CORRECT IMAGE FITTING RULES
+  const shouldCover =
+    currentSlide === 0 || // Slide 1
+    currentSlide === 1 || // Slide 2
+    currentSlide === 4;   // Slide 5
+
   return (
     <section className="relative min-h-[78vh] md:min-h-[90vh] overflow-hidden flex items-center">
 
-      {/* ===== FIXED BACKGROUND FOR SLIDE 2 (MOBILE + DESKTOP) ===== */}
+      {/* ===== BACKGROUND ===== */}
       <div className="absolute inset-0 z-0">
 
-        {/* ALWAYS SHOW BLURRED BACKGROUND FOR SLIDE 2 */}
+        {/* Slide 2 blur overlay */}
         {currentSlide === 1 && (
           <motion.img
-            src={data.image}
-            alt="blurred-bg"
+            src={slideImage}
+            alt="blur-bg"
             className="absolute inset-0 w-full h-full object-cover blur-2xl scale-125 opacity-60"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -95,16 +140,20 @@ const CuratedGiftingHero = () => {
           />
         )}
 
-        {/* MAIN IMAGE */}
+        {/* ⭐ MAIN IMAGE */}
         <motion.img
-          src={data.image}
+          src={slideImage}
           alt="Slide"
           className={`
             relative z-10 w-full h-full
             ${
               currentSlide === 1
-                ? "object-contain"        /* Fix for slide 2 */
-                : "object-cover"          /* Normal for others */
+                ? "object-cover"
+                : isMobile
+                ? shouldCover
+                  ? "object-cover"
+                  : "object-contain"
+                : "object-cover"
             }
             brightness-[0.88] contrast-[1.06]
           `}
@@ -114,7 +163,7 @@ const CuratedGiftingHero = () => {
         />
       </div>
 
-      {/* ===== GRADIENT OVERLAYS ===== */}
+      {/* ===== GRADIENTS ===== */}
       <div className="absolute inset-0 pointer-events-none z-10">
         <div className="absolute top-0 w-full h-[140px] bg-gradient-to-b from-black/80 to-transparent" />
         <div className="absolute bottom-0 w-full h-[160px] bg-gradient-to-t from-black/85 to-transparent" />
@@ -122,11 +171,9 @@ const CuratedGiftingHero = () => {
         <div className="absolute right-0 top-0 h-full w-[3px] bg-gradient-to-b from-[#d4a017aa] to-[#d4a01733]" />
       </div>
 
-      {/* ===== TEXT ONLY FOR SLIDE 1 & 5 ===== */}
+      {/* ===== TEXT FOR SLIDE 1 & 5 ===== */}
       {data.showText && (
         <div className="relative z-20 container mx-auto px-6 max-w-3xl text-center">
-          
-          {/* Badge */}
           <motion.div whileHover={{ scale: 1.05 }}>
             <Button
               size="sm"
@@ -136,22 +183,18 @@ const CuratedGiftingHero = () => {
             </Button>
           </motion.div>
 
-          {/* Text */}
           <div className="mt-7 space-y-4">
             <h3 className="text-[#FFE9B2] text-lg md:text-2xl font-medium tracking-wider drop-shadow">
               {data.subtitle}
             </h3>
-
             <h1 className="text-3xl md:text-5xl font-bold text-white leading-tight drop-shadow-2xl">
               {data.title}
             </h1>
-
             <p className="text-gray-200 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
               {data.description}
             </p>
           </div>
 
-          {/* Buttons */}
           <div className="mt-7 flex flex-col sm:flex-row justify-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }}>
               <Button
@@ -178,7 +221,7 @@ const CuratedGiftingHero = () => {
         </div>
       )}
 
-      {/* ===== DOTS ===== */}
+      {/* DOTS */}
       <div className="absolute bottom-14 left-0 right-0 flex justify-center z-40">
         <div className="flex space-x-2">
           {sliderData.map((_, i) => (
@@ -193,7 +236,7 @@ const CuratedGiftingHero = () => {
         </div>
       </div>
 
-      {/* ===== ARROWS ===== */}
+      {/* ARROWS */}
       <button
         onClick={prevSlide}
         className="absolute left-6 top-1/2 -translate-y-1/2 z-40 bg-black/30 hover:bg-black/55 text-white p-3 rounded-full backdrop-blur-sm"
